@@ -1,0 +1,16 @@
+{
+  "intro_title": "Dịch vụ của chúng tôi",
+  "intro_desc": "Chọn gói phù hợp với nhu cầu của bạn — theo giờ hoặc theo ngày.",
+  "packages_hourly": [
+    { "name": "Gói 1 giờ", "price": "500.000đ", "featured": false, "features": ["1 giờ đồng hành", "Chọn địa điểm", "Hỗ trợ 24/7"] },
+    { "name": "Gói 2 giờ", "price": "900.000đ", "featured": false, "features": ["2 giờ đồng hành", "Chọn địa điểm", "Hỗ trợ 24/7", "Đánh giá minh bạch"] },
+    { "name": "Gói 4 giờ", "price": "1.700.000đ", "featured": true, "features": ["4 giờ đồng hành", "Ưu tiên chọn địa điểm", "Hỗ trợ 24/7", "Đánh giá minh bạch", "Đảm bảo hoàn tiền"] },
+    { "name": "Gói 8 giờ", "price": "3.000.000đ", "featured": false, "features": ["8 giờ đồng hành", "Ưu tiên chọn địa điểm", "Hỗ trợ 24/7", "Đánh giá minh bạch"] }
+  ],
+  "packages_daily": [
+    { "name": "Gói 1 ngày", "price": "2.000.000đ", "featured": false, "features": ["1 ngày đồng hành (tối đa 8 giờ)", "Chọn địa điểm", "Hỗ trợ 24/7"] },
+    { "name": "Gói 2 ngày", "price": "3.800.000đ", "featured": true, "features": ["2 ngày đồng hành", "Ưu tiên chọn địa điểm", "Hỗ trợ 24/7", "Đánh giá minh bạch", "Đảm bảo hoàn tiền"] },
+    { "name": "Gói 3 ngày (chuyến đi ngắn)", "price": "5.400.000đ", "featured": false, "features": ["3 ngày đồng hành, phù hợp du lịch ngắn ngày", "Ưu tiên chọn địa điểm", "Hỗ trợ 24/7", "Đánh giá minh bạch"] },
+    { "name": "Gói 7 ngày (chuyến đi dài)", "price": "11.500.000đ", "featured": false, "features": ["7 ngày đồng hành, phù hợp chuyến đi dài", "Ưu tiên chọn địa điểm", "Hỗ trợ 24/7", "Đánh giá minh bạch", "Đảm bảo hoàn tiền"] }
+  ]
+}

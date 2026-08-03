@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Người đồng hành — Boyfriend Material</title>
-<meta name="description" content="Duyệt danh sách người đồng hành đã xác minh theo khu vực, hoạt động và mức giá phù hợp với bạn.">
-<meta property="og:title" content="Người đồng hành — Boyfriend Material">
-<meta property="og:description" content="Duyệt danh sách người đồng hành đã xác minh theo khu vực, hoạt động và mức giá phù hợp với bạn.">
+<title>Quản trị — Boyfriend Material</title>
+<meta name="description" content="Trang quản trị nội bộ Boyfriend Material.">
+<meta property="og:title" content="Quản trị — Boyfriend Material">
+<meta property="og:description" content="Trang quản trị nội bộ Boyfriend Material.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="images/og-cover.jpg">
 <link rel="icon" type="image/jpeg" href="images/logo.jpg">
@@ -23,7 +23,7 @@
       <a href="index.html">Trang chủ</a>
       <a href="dich-vu.html">Dịch vụ</a>
       <a href="ve-chung-toi.html">Về chúng tôi</a>
-      <a href="danh-sach.html" class="active">Người đồng hành</a>
+      <a href="danh-sach.html">Người đồng hành</a>
       <a href="lien-he.html">Liên hệ</a>
     </nav>
     <div class="nav-cta">
@@ -39,27 +39,52 @@
 
 <main>
   <section class="section section--tight">
-    <div class="container section-head">
-      <span class="eyebrow center">Danh sách</span>
-      <h2>Tìm người đồng hành phù hợp</h2>
-      <p>Chọn một hồ sơ để xem chi tiết và đặt lịch.</p>
-    </div>
-
     <div class="container">
-      <div class="filter-bar">
-        <div class="filters">
-          <input type="text" id="filter-search" placeholder="Tìm theo tên..." style="padding:10px 14px;border:1px solid #ddd;border-radius:8px;min-width:160px;">
-          <select id="filter-loc"><option value="">Khu vực</option><option>TP. Hồ Chí Minh</option><option>Hà Nội</option><option>Đà Nẵng</option></select>
-          <select id="filter-activity"><option value="">Hoạt động</option><option>Đi ăn / Cafe</option><option>Du lịch</option><option>Sự kiện</option><option>Xem phim</option><option>Mua sắm</option><option>Chơi game</option></select>
-          <select id="filter-sort"><option value="">Sắp xếp</option><option value="rating-desc">Đánh giá cao nhất</option><option value="price-asc">Giá thấp đến cao</option><option value="price-desc">Giá cao đến thấp</option></select>
-        </div>
-        <span class="result-count" id="result-count">9 người đồng hành</span>
+      <div class="section-head">
+        <span class="eyebrow center">Quản trị</span>
+        <h2>Trang quản lý (Admin)</h2>
+        <p>Thêm người đồng hành mới mà không cần sửa tay file HTML. Xem lại các lượt đặt lịch demo.</p>
       </div>
 
-      <div class="people-grid" id="people-grid">
-        <p style="grid-column:1/-1;color:#8a93a6;padding:30px;text-align:center;">Đang tải danh sách người đồng hành...</p>
+      <div class="edit-note" style="max-width:760px;margin:0 auto 28px;">
+        Đây là admin panel DEMO: dữ liệu lưu trong localStorage của trình duyệt này, không đồng bộ
+        cho người dùng khác và không có đăng nhập riêng cho quản trị viên. Trang này đã bị chặn trong
+        robots.txt để Google không index, nhưng bạn nên tự khoá bằng mật khẩu trước khi đưa site lên
+        mạng thật lâu dài.
       </div>
-      <div id="admin-extra-cards" class="people-grid" style="margin-top:0;"></div>
+
+      <div style="max-width:760px;margin:0 auto 40px;">
+        <h3 style="font-size:1.1rem;margin-bottom:16px;">Đơn đăng ký làm người đồng hành (chờ duyệt)</h3>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:14px;">Khi ai đó chọn vai trò "Người đồng hành" lúc đăng ký và hoàn tất eKYC, đơn của họ sẽ hiện ở đây. Duyệt để đưa họ vào danh sách công khai (bạn cần bổ sung thêm ảnh/giá/mô tả sau khi duyệt qua mục "Thêm người đồng hành mới" ở trên, dùng đúng tên đã đăng ký).</p>
+        <div id="companion-application-list"></div>
+      </div>
+
+      <div class="form-card" style="max-width:760px;margin:0 auto 40px;">
+        <h3 style="font-size:1.1rem;margin-bottom:16px;">Thêm người đồng hành mới</h3>
+        <form id="add-companion-form">
+          <div class="form-grid">
+            <div class="field"><label>Tên</label><input type="text" id="c-name" required></div>
+            <div class="field"><label>Tuổi</label><input type="number" id="c-age" min="18" required></div>
+            <div class="field"><label>Khu vực</label>
+              <select id="c-loc"><option>TP. Hồ Chí Minh</option><option>Hà Nội</option><option>Đà Nẵng</option></select>
+            </div>
+            <div class="field"><label>Giá / giờ (VNĐ)</label><input type="number" id="c-price" min="0" step="10000" required></div>
+            <div class="field"><label>Đánh giá (1-5)</label><input type="number" id="c-rating" min="1" max="5" step="0.1" value="4.8"></div>
+          </div>
+          <div class="field"><label>Mô tả ngắn</label><textarea id="c-desc" placeholder="Giới thiệu ngắn về người đồng hành..."></textarea></div>
+          <button type="submit" class="btn btn-primary btn-block">Thêm vào danh sách</button>
+        </form>
+      </div>
+
+      <div style="max-width:760px;margin:0 auto 40px;">
+        <h3 style="font-size:1.1rem;margin-bottom:16px;">Người đồng hành đã thêm qua admin</h3>
+        <div id="companion-admin-list"></div>
+      </div>
+
+      <div style="max-width:760px;margin:0 auto;">
+        <h3 style="font-size:1.1rem;margin-bottom:16px;">Lượt đặt lịch (demo)</h3>
+        <div id="booking-admin-list"></div>
+      </div>
     </div>
   </section>
 </main>

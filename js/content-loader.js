@@ -29,8 +29,9 @@ var CONTENT = (function () {
     });
   }
   function getSettings() { return fetchJSON('content/settings.json').catch(function () { return {}; }); }
+  function getPage(name) { return fetchJSON('content/pages/' + name + '.json').catch(function () { return null; }); }
 
-  return { getManifest: getManifest, getCompanion: getCompanion, getAllCompanions: getAllCompanions, getSettings: getSettings };
+  return { getManifest: getManifest, getCompanion: getCompanion, getAllCompanions: getAllCompanions, getSettings: getSettings, getPage: getPage };
 })();
 
 function priceFmt(n) { return Number(n).toLocaleString('vi-VN'); }
@@ -133,6 +134,7 @@ function initProfileContent() {
           '<h3 style="font-size:1.1rem;">Đặt lịch với ' + firstName + '</h3>' +
           '<p class="book-price">' + priceFmt(p.price) + 'đ <span>/giờ</span></p><hr>' +
           '<div class="field"><label>Chọn ngày</label><input type="date"></div>' +
+          '<div class="field"><label>Địa điểm gặp mặt</label><input type="text" id="book-location" placeholder="Ví dụ: Quán cafe ABC, Quận 1..."></div>' +
           '<div class="field"><label>Khung giờ (từ - đến)</label><div class="time-range-row">' +
             '<select id="book-time-from"><option>06:00</option><option>08:00</option><option>10:00</option><option>12:00</option><option selected>14:00</option><option>16:00</option><option>18:00</option><option>20:00</option><option>22:00</option></select>' +
             '<span>đến</span>' +
@@ -155,16 +157,88 @@ function initProfileContent() {
 }
 
 // =========================================================================
+// Logo header/footer — áp dụng trên MỌI trang có content-loader.js
+// =========================================================================
+function initGlobalBranding() {
+  var header = document.getElementById('site-logo-header');
+  var footer = document.getElementById('site-logo-footer');
+  if (!header && !footer) return;
+  CONTENT.getSettings().then(function (s) {
+    if (!s || !s.site_logo) return;
+    if (header) header.src = s.site_logo;
+    if (footer) footer.src = s.site_logo;
+  });
+}
+
+// =========================================================================
+// Trang Dịch vụ: tiêu đề + 2 bảng gói (theo giờ / theo ngày)
+// =========================================================================
+function pkgCardHTML(pkg) {
+  var featClass = pkg.featured ? ' featured' : '';
+  var tag = pkg.featured ? '<span class="pkg-tag">Phổ biến nhất</span>' : '';
+  var btnClass = pkg.featured ? 'btn-primary' : 'btn-outline';
+  var feats = (pkg.features || []).map(function (f) { return '<li>' + f + '</li>'; }).join('');
+  return '<div class="pkg-card' + featClass + '">' + tag +
+    '<span class="pkg-name">' + pkg.name + '</span><span class="pkg-price">' + pkg.price + '</span>' +
+    '<ul class="pkg-feats">' + feats + '</ul>' +
+    '<a href="danh-sach.html" class="btn ' + btnClass + ' btn-block">Chọn gói</a></div>';
+}
+function initServicesContent() {
+  var hourlyGrid = document.getElementById('pkg-hourly');
+  var dailyGrid = document.getElementById('pkg-daily');
+  if (!hourlyGrid && !dailyGrid) return;
+  CONTENT.getPage('dich-vu').then(function (p) {
+    if (!p) return;
+    var titleEl = document.getElementById('dv-title');
+    var descEl = document.getElementById('dv-desc');
+    if (titleEl && p.intro_title) titleEl.textContent = p.intro_title;
+    if (descEl && p.intro_desc) descEl.textContent = p.intro_desc;
+    if (hourlyGrid && p.packages_hourly) hourlyGrid.innerHTML = p.packages_hourly.map(pkgCardHTML).join('');
+    if (dailyGrid && p.packages_daily) dailyGrid.innerHTML = p.packages_daily.map(pkgCardHTML).join('');
+  });
+}
+
+// =========================================================================
+// Trang Về chúng tôi: tiêu đề, mô tả, sứ mệnh, ảnh, số liệu
+// =========================================================================
+function initAboutContent() {
+  var wrap = document.getElementById('about-stats');
+  if (!wrap) return;
+  CONTENT.getPage('ve-chung-toi').then(function (p) {
+    if (!p) return;
+    var titleEl = document.getElementById('about-title');
+    var descEl = document.getElementById('about-desc');
+    var missionEl = document.getElementById('about-mission');
+    var imgWrap = document.getElementById('about-image-wrap');
+    if (titleEl && p.intro_title) titleEl.textContent = p.intro_title;
+    if (descEl && p.intro_desc) descEl.textContent = p.intro_desc;
+    if (missionEl && p.mission_text) missionEl.textContent = p.mission_text;
+    if (imgWrap && p.image) {
+      imgWrap.outerHTML = '<div style="border-radius:var(--radius-lg);overflow:hidden;"><img src="' + p.image + '" alt="Về chúng tôi" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML=\'<div class=&quot;placeholder-photo&quot;><div class=&quot;icon&quot;>🖼️</div>Chưa có ảnh</div>' + '\'"></div>';
+    }
+    if (wrap && p.stats) {
+      wrap.innerHTML = p.stats.map(function (s) {
+        return '<div class="stat-card"><div class="num">' + s.number + '</div><div class="lbl">' + s.label + '</div></div>';
+      }).join('');
+    }
+  });
+}
+
+// =========================================================================
 // Trang liên hệ: điền số điện thoại / email / địa chỉ từ settings.json
 // =========================================================================
 function initContactInfoContent() {
   var wrap = document.getElementById('contact-info-app');
   if (!wrap) return;
   CONTENT.getSettings().then(function (s) {
+    var titleEl = document.getElementById('contact-title');
+    var descEl = document.getElementById('contact-desc');
     var hotline = document.getElementById('info-hotline');
     var email = document.getElementById('info-email');
     var address = document.getElementById('info-address');
     var hours = document.getElementById('info-hours');
+    if (titleEl && s.contact_intro_title) titleEl.textContent = s.contact_intro_title;
+    if (descEl && s.contact_intro_desc) descEl.textContent = s.contact_intro_desc;
     if (hotline && s.contact_hotline) hotline.textContent = s.contact_hotline;
     if (email && s.contact_email) email.textContent = s.contact_email;
     if (address && s.contact_address) address.textContent = s.contact_address;
@@ -173,8 +247,11 @@ function initContactInfoContent() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  initGlobalBranding();
   initHomeContent();
   initDanhSachContent();
   initProfileContent();
   initContactInfoContent();
+  initServicesContent();
+  initAboutContent();
 });

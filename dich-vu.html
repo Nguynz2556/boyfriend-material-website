@@ -18,7 +18,7 @@
 
 <header class="site-header">
   <div class="container nav">
-    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
+    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" id="site-logo-header" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
     <nav class="nav-links">
       <a href="index.html">Trang chủ</a>
       <a href="dich-vu.html" class="active">Dịch vụ</a>
@@ -41,8 +41,8 @@
   <section class="section section--tight">
     <div class="container section-head">
       <span class="eyebrow center">Dịch vụ</span>
-      <h2>Dịch vụ của chúng tôi</h2>
-      <p>Đa dạng các loại hình đồng hành đáp ứng mọi nhu cầu của bạn.</p>
+      <h2 id="dv-title">Dịch vụ của chúng tôi</h2>
+      <p id="dv-desc">Đa dạng các loại hình đồng hành đáp ứng mọi nhu cầu của bạn.</p>
     </div>
 
     <div class="container service-grid">
@@ -73,7 +73,7 @@
         <button data-pricing="daily">Theo ngày</button>
       </div>
 
-      <div class="pkg-grid" data-pkg-panel="hourly">
+      <div class="pkg-grid" data-pkg-panel="hourly" id="pkg-hourly">
         <div class="pkg-card">
           <span class="pkg-name">Gói 1 giờ</span>
           <span class="pkg-price">500.000đ</span>
@@ -121,7 +121,7 @@
         </div>
       </div>
 
-      <div class="pkg-grid" data-pkg-panel="daily" hidden>
+      <div class="pkg-grid" data-pkg-panel="daily" id="pkg-daily" hidden>
         <div class="pkg-card">
           <span class="pkg-name">Gói 1 ngày</span>
           <span class="pkg-price">2.000.000đ</span>
@@ -176,7 +176,7 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
+      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" id="site-logo-footer" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
       <p>Nền tảng kết nối bạn với người đồng hành đáng tin cậy cho mọi khoảnh khắc cuộc sống.</p>
       <div class="footer-social"><a href="https://facebook.com/" target="_blank" rel="noopener">f</a><a href="https://instagram.com/" target="_blank" rel="noopener">◎</a><a href="https://youtube.com/" target="_blank" rel="noopener">▶</a></div>
     </div>
@@ -196,6 +196,7 @@
 </footer>
 
 <script src="js/store.js"></script>
+<script src="js/content-loader.js"></script>
 <script src="js/pages.js"></script>
 <script src="js/main.js"></script>
 </body>

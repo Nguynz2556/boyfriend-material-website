@@ -18,7 +18,7 @@
 
 <header class="site-header">
   <div class="container nav">
-    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
+    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" id="site-logo-header" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
     <nav class="nav-links">
       <a href="index.html">Trang chủ</a>
       <a href="dich-vu.html">Dịch vụ</a>
@@ -42,12 +42,12 @@
     <div class="container about-hero">
       <div>
         <span class="eyebrow">Giới thiệu</span>
-        <h2 style="margin-top:8px; font-size:clamp(1.7rem,3vw,2.4rem);">Về Boyfriend Material</h2>
-        <p style="color:var(--ink-soft); margin-top:12px;">Kết nối những người đồng hành đáng tin cậy, tạo nên những khoảnh khắc đáng nhớ.</p>
+        <h2 id="about-title" style="margin-top:8px; font-size:clamp(1.7rem,3vw,2.4rem);">Về Boyfriend Material</h2>
+        <p id="about-desc" style="color:var(--ink-soft); margin-top:12px;">Kết nối những người đồng hành đáng tin cậy, tạo nên những khoảnh khắc đáng nhớ.</p>
 
         <div class="value-block">
           <h4>Sứ mệnh của chúng tôi</h4>
-          <p>Boyfriend Material ra đời với sứ mệnh kết nối những người đồng hành đáng tin cậy cho mọi khoảnh khắc trong cuộc sống của bạn.</p>
+          <p id="about-mission">Boyfriend Material ra đời với sứ mệnh kết nối những người đồng hành đáng tin cậy cho mọi khoảnh khắc trong cuộc sống của bạn.</p>
         </div>
         <div class="value-block">
           <h4>Tầm nhìn</h4>
@@ -63,14 +63,14 @@
         </div>
       </div>
 
-      <div class="placeholder-photo">
+      <div class="placeholder-photo" id="about-image-wrap">
         <div class="icon">🖼️</div>
         <b>Ảnh minh họa Về chúng tôi</b>
         <span>Thay bằng: images/about.jpg</span>
       </div>
     </div>
 
-    <div class="container stat-strip">
+    <div class="container stat-strip" id="about-stats">
       <div class="stat-card"><div class="num">500+</div><div class="lbl">Người đồng hành đã xác minh</div></div>
       <div class="stat-card"><div class="num">15.000+</div><div class="lbl">Lượt đặt dịch vụ thành công</div></div>
       <div class="stat-card"><div class="num">4.9/5</div><div class="lbl">Đánh giá trung bình từ khách hàng</div></div>
@@ -99,7 +99,7 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
+      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" id="site-logo-footer" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
       <p>Nền tảng kết nối bạn với người đồng hành đáng tin cậy cho mọi khoảnh khắc cuộc sống.</p>
       <div class="footer-social"><a href="https://facebook.com/" target="_blank" rel="noopener">f</a><a href="https://instagram.com/" target="_blank" rel="noopener">◎</a><a href="https://youtube.com/" target="_blank" rel="noopener">▶</a></div>
     </div>
@@ -119,6 +119,7 @@
 </footer>
 
 <script src="js/store.js"></script>
+<script src="js/content-loader.js"></script>
 <script src="js/pages.js"></script>
 <script src="js/main.js"></script>
 </body>

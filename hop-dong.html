@@ -18,7 +18,7 @@
 
 <header class="site-header">
   <div class="container nav">
-    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
+    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" id="site-logo-header" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
     <nav class="nav-links">
       <a href="index.html">Trang chủ</a>
       <a href="dich-vu.html">Dịch vụ</a>
@@ -39,11 +39,11 @@
 
 <main>
   <section class="section section--tight">
-    <div class="container" style="max-width:640px;">
+    <div class="container" style="max-width:680px;">
       <div class="section-head">
-        <span class="eyebrow center">Xác nhận đặt lịch</span>
-        <h2>Hợp đồng đặt lịch</h2>
-        <p>Vui lòng đọc kỹ nội dung và ký xác nhận để hoàn tất lượt đặt lịch.</p>
+        <span class="eyebrow center">Hợp đồng dịch vụ</span>
+        <h2 id="contract-page-title">Hợp đồng đặt lịch</h2>
+        <p id="contract-page-desc">Vui lòng đọc kỹ nội dung và ký xác nhận để hoàn tất lượt đặt lịch.</p>
       </div>
 
       <div class="edit-note" style="margin-bottom:20px;">
@@ -51,28 +51,7 @@
         chữ ký số hợp pháp như VNPT-CA, FPT-CA...). Chỉ dùng để minh hoạ luồng hoạt động.
       </div>
 
-      <div id="contract-app">
-        <div class="form-card" id="contract-details" style="margin-bottom:20px;"></div>
-
-        <div class="form-card">
-          <div style="max-height:200px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:14px;font-size:.82rem;color:var(--ink-soft);margin-bottom:14px;">
-            <p><b>HỢP ĐỒNG DỊCH VỤ ĐỒNG HÀNH (theo lượt đặt)</b></p>
-            <p>Hợp đồng này xác nhận giao dịch đặt lịch giữa khách hàng và người đồng hành nêu trên, theo đúng thời gian, dịch vụ và mức giá đã thoả thuận trên nền tảng Boyfriend Material. Hai bên cam kết tuân thủ Quy tắc ứng xử của nền tảng và pháp luật hiện hành trong suốt buổi hẹn.</p>
-            <p><i>(Văn bản mẫu — nên nhờ luật sư soạn lại nội dung chính thức trước khi dùng thật.)</i></p>
-          </div>
-          <label style="display:flex;align-items:flex-start;gap:8px;font-size:.85rem;margin-bottom:10px;">
-            <input type="checkbox" id="contract-agree">
-            <span>Tôi đồng ý với nội dung hợp đồng trên.</span>
-          </label>
-          <label style="font-size:.85rem;">Ký tên xác nhận:</label>
-          <canvas id="sign-pad" width="560" height="160" style="border:1px dashed var(--line);border-radius:8px;width:100%;touch-action:none;background:#fff;margin:8px 0;"></canvas>
-          <div style="display:flex;gap:10px;margin-bottom:16px;">
-            <button type="button" id="btn-clear-sign" class="btn btn-outline btn-sm">Xoá chữ ký</button>
-          </div>
-          <div id="contract-msg" class="form-msg"></div>
-          <button type="button" id="btn-sign-contract" class="btn btn-primary btn-block">Ký hợp đồng &amp; xác nhận đặt lịch</button>
-        </div>
-      </div>
+      <div id="contract-app"></div>
     </div>
   </section>
 </main>
@@ -80,7 +59,7 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
+      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" id="site-logo-footer" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
       <p>Nền tảng kết nối bạn với người đồng hành đáng tin cậy cho mọi khoảnh khắc cuộc sống.</p>
       <div class="footer-social"><a href="https://facebook.com/" target="_blank" rel="noopener">f</a><a href="https://instagram.com/" target="_blank" rel="noopener">◎</a><a href="https://youtube.com/" target="_blank" rel="noopener">▶</a></div>
     </div>
@@ -100,6 +79,7 @@
 </footer>
 
 <script src="js/store.js"></script>
+<script src="js/content-loader.js"></script>
 <script src="js/pages.js"></script>
 <script src="js/main.js"></script>
 </body>

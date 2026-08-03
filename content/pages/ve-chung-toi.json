@@ -1,0 +1,12 @@
+{
+  "intro_title": "Về chúng tôi",
+  "intro_desc": "Boyfriend Material ra đời với sứ mệnh mang đến những người đồng hành đáng tin cậy, giúp bạn không còn cô đơn trong những khoảnh khắc cần một ai đó ở bên.",
+  "mission_text": "Chúng tôi tin rằng ai cũng xứng đáng có một người đồng hành phù hợp cho từng khoảnh khắc trong cuộc sống — dù là một bữa ăn, một chuyến đi hay một buổi trò chuyện. Mọi người đồng hành trên nền tảng đều được xác minh danh tính kỹ lưỡng để đảm bảo an toàn cho cả hai phía.",
+  "image": "images/uploads/about-us.jpg",
+  "stats": [
+    { "number": "500+", "label": "Người đồng hành đã xác minh" },
+    { "number": "15.000+", "label": "Lượt đặt lịch thành công" },
+    { "number": "4.9/5", "label": "Đánh giá trung bình" },
+    { "number": "98%", "label": "Khách hàng hài lòng" }
+  ]
+}

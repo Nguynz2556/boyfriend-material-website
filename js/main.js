@@ -198,6 +198,7 @@ function wireBooking() {
 
     var companionName = document.querySelector('.book-card h3').textContent.replace('Đặt lịch với ', '');
     var dateInput = document.querySelector('.book-card input[type="date"]');
+    var locationInput = document.querySelector('#book-location');
     var timeFrom = document.querySelector('#book-time-from');
     var timeTo = document.querySelector('#book-time-to');
     var timeRange = (timeFrom && timeTo) ? (timeFrom.value + ' - ' + timeTo.value) : '';
@@ -219,6 +220,7 @@ function wireBooking() {
       service: priceText,
       date: dateInput ? dateInput.value : '',
       timeRange: timeRange,
+      location: locationInput ? locationInput.value.trim() : '',
     });
 
     if (typeof sendToGoogleBackend === 'function') {

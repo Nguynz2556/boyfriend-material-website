@@ -461,3 +461,10 @@ input,select,textarea{ font-family:inherit; }
 /* --- eKYC / hợp đồng --- */
 #ekyc-app input[type="file"]{ width:100%; padding:8px; border:1px dashed var(--line); border-radius:8px; font-size:.82rem; }
 #sign-pad{ cursor:crosshair; display:block; }
+
+/* =========================================================================
+   BỔ SUNG (đợt sửa lỗi 4): văn bản hợp đồng, CMS mở rộng
+   ========================================================================= */
+.contract-paper{ font-size:.88rem; line-height:1.6; color:var(--ink); }
+.contract-paper h4{ margin-top:18px; margin-bottom:6px; font-size:.95rem; color:var(--navy); }
+.contract-paper p{ margin-bottom:8px; }

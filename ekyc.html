@@ -18,7 +18,7 @@
 
 <header class="site-header">
   <div class="container nav">
-    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
+    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" id="site-logo-header" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
     <nav class="nav-links">
       <a href="index.html">Trang chủ</a>
       <a href="dich-vu.html">Dịch vụ</a>
@@ -92,14 +92,18 @@
             <p>Bằng việc ký xác nhận bên dưới, tôi cam kết: (1) thông tin CCCD và ảnh khuôn mặt cung cấp là chính xác, thuộc về chính tôi; (2) tôi từ 18 tuổi trở lên; (3) tôi cam kết tuân thủ Quy tắc ứng xử của nền tảng, không thực hiện các hành vi vi phạm pháp luật hiện hành trong quá trình sử dụng dịch vụ; (4) tôi hiểu nền tảng có quyền từ chối/huỷ tài khoản nếu phát hiện vi phạm.</p>
             <p><i>(Đây là văn bản mẫu — bạn nên nhờ luật sư soạn lại nội dung hợp đồng chính thức trước khi dùng thật.)</i></p>
           </div>
-          <div class="field"><label>Họ tên đầy đủ (ghi rõ để xác nhận)</label><input type="text" id="ekyc-fullname"></div>
+          <div class="form-grid">
+            <div class="field"><label>Họ tên đầy đủ (theo đúng CCCD)</label><input type="text" id="ekyc-fullname"></div>
+            <div class="field"><label>Số điện thoại</label><input type="tel" id="ekyc-phone" placeholder="Nhập số điện thoại"></div>
+          </div>
           <label style="display:flex;align-items:flex-start;gap:8px;font-size:.85rem;margin:10px 0;">
             <input type="checkbox" id="ekyc-agree" style="margin-top:3px;">
             <span>Tôi đã đọc và đồng ý với nội dung hợp đồng ở trên.</span>
           </label>
-          <label style="font-size:.85rem;">Ký tên bên dưới (dùng chuột hoặc ngón tay):</label>
+          <label style="font-size:.85rem;">Ký tên bên dưới (dùng chuột hoặc ngón tay) — chữ ký sẽ tự điền theo họ tên bạn nhập ở trên:</label>
           <canvas id="sign-pad" width="560" height="160" style="border:1px dashed var(--line);border-radius:8px;width:100%;touch-action:none;background:#fff;margin:8px 0;"></canvas>
-          <div style="display:flex;gap:10px;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button type="button" id="btn-auto-sign" class="btn btn-primary btn-sm">✍️ Dùng họ tên làm chữ ký</button>
             <button type="button" id="btn-clear-sign" class="btn btn-outline btn-sm">Xoá chữ ký</button>
           </div>
         </div>
@@ -114,7 +118,7 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
+      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" id="site-logo-footer" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
       <p>Nền tảng kết nối bạn với người đồng hành đáng tin cậy cho mọi khoảnh khắc cuộc sống.</p>
       <div class="footer-social"><a href="https://facebook.com/" target="_blank" rel="noopener">f</a><a href="https://instagram.com/" target="_blank" rel="noopener">◎</a><a href="https://youtube.com/" target="_blank" rel="noopener">▶</a></div>
     </div>
@@ -134,6 +138,7 @@
 </footer>
 
 <script src="js/store.js"></script>
+<script src="js/content-loader.js"></script>
 <script src="js/pages.js"></script>
 <script src="js/main.js"></script>
 </body>

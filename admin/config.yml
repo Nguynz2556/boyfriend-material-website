@@ -85,18 +85,21 @@ collections:
             widget: "list"
 
   # ---------------------------------------------------------------------
-  # 3. THÔNG TIN CHUNG CỦA SITE — trang chủ + trang liên hệ
+  # 3. THÔNG TIN CHUNG CỦA SITE — logo, trang chủ, liên hệ, thông tin công ty
   # ---------------------------------------------------------------------
   - name: "settings"
     label: "Thông tin chung"
     files:
       - name: "settings"
-        label: "Trang chủ & Liên hệ"
+        label: "Logo, Trang chủ & Liên hệ"
         file: "content/settings.json"
         fields:
+          - { label: "Logo (hiện ở header + footer mọi trang)", name: "site_logo", widget: "image" }
           - { label: "Tiêu đề trang chủ - dòng 1", name: "hero_title_line1", widget: "string" }
           - { label: "Tiêu đề trang chủ - chữ nhấn (màu vàng)", name: "hero_title_accent", widget: "string" }
           - { label: "Mô tả ngắn trang chủ", name: "hero_desc", widget: "text" }
+          - { label: "Tiêu đề trang Liên hệ", name: "contact_intro_title", widget: "string" }
+          - { label: "Mô tả trang Liên hệ", name: "contact_intro_desc", widget: "string" }
           - { label: "Số hotline", name: "contact_hotline", widget: "string" }
           - { label: "Email liên hệ", name: "contact_email", widget: "string" }
           - { label: "Địa chỉ", name: "contact_address", widget: "string" }
@@ -104,3 +107,58 @@ collections:
           - { label: "Link Facebook", name: "facebook_url", widget: "string" }
           - { label: "Link Instagram", name: "instagram_url", widget: "string" }
           - { label: "Link YouTube", name: "youtube_url", widget: "string" }
+          - { label: "Tên pháp lý công ty (dùng trong hợp đồng)", name: "company_legal_name", widget: "string" }
+          - { label: "Địa chỉ công ty (dùng trong hợp đồng)", name: "company_address", widget: "string" }
+          - { label: "SĐT công ty (dùng trong hợp đồng)", name: "company_phone", widget: "string" }
+          - { label: "Email công ty (dùng trong hợp đồng)", name: "company_email", widget: "string" }
+          - { label: "Người đại diện (dùng trong hợp đồng)", name: "company_representative", widget: "string" }
+
+  # ---------------------------------------------------------------------
+  # 4. TRANG DỊCH VỤ — sửa gói theo giờ / theo ngày
+  # ---------------------------------------------------------------------
+  - name: "page_dichvu"
+    label: "Trang Dịch vụ"
+    files:
+      - name: "dichvu"
+        label: "Nội dung trang Dịch vụ"
+        file: "content/pages/dich-vu.json"
+        fields:
+          - { label: "Tiêu đề", name: "intro_title", widget: "string" }
+          - { label: "Mô tả", name: "intro_desc", widget: "string" }
+          - label: "Các gói Theo giờ"
+            name: "packages_hourly"
+            widget: "list"
+            fields:
+              - { label: "Tên gói", name: "name", widget: "string" }
+              - { label: "Giá", name: "price", widget: "string" }
+              - { label: "Nổi bật? (hiện khung vàng)", name: "featured", widget: "boolean", default: false }
+              - { label: "Tính năng", name: "features", widget: "list" }
+          - label: "Các gói Theo ngày"
+            name: "packages_daily"
+            widget: "list"
+            fields:
+              - { label: "Tên gói", name: "name", widget: "string" }
+              - { label: "Giá", name: "price", widget: "string" }
+              - { label: "Nổi bật? (hiện khung vàng)", name: "featured", widget: "boolean", default: false }
+              - { label: "Tính năng", name: "features", widget: "list" }
+
+  # ---------------------------------------------------------------------
+  # 5. TRANG VỀ CHÚNG TÔI — sửa chữ, ảnh, số liệu thống kê
+  # ---------------------------------------------------------------------
+  - name: "page_vechungtoi"
+    label: "Trang Về chúng tôi"
+    files:
+      - name: "vechungtoi"
+        label: "Nội dung trang Về chúng tôi"
+        file: "content/pages/ve-chung-toi.json"
+        fields:
+          - { label: "Tiêu đề", name: "intro_title", widget: "string" }
+          - { label: "Mô tả ngắn", name: "intro_desc", widget: "text" }
+          - { label: "Nội dung sứ mệnh", name: "mission_text", widget: "text" }
+          - { label: "Ảnh minh hoạ", name: "image", widget: "image" }
+          - label: "4 ô số liệu thống kê"
+            name: "stats"
+            widget: "list"
+            fields:
+              - { label: "Số liệu (ví dụ 500+, 4.9/5)", name: "number", widget: "string" }
+              - { label: "Mô tả", name: "label", widget: "string" }

@@ -348,6 +348,16 @@ function setupSignaturePad(canvasId, clearBtnId) {
   return {
     isEmpty: function () { return !hasSigned; },
     getDataURL: function () { return canvas.toDataURL('image/png'); },
+    drawText: function (text) {
+      if (!text || !text.trim()) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = 'italic 42px "Brush Script MT", cursive, serif';
+      ctx.fillStyle = '#172341';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text.trim(), 24, canvas.height / 2);
+      hasSigned = true;
+    },
+    clear: function () { ctx.clearRect(0, 0, canvas.width, canvas.height); hasSigned = false; },
   };
 }
 
@@ -384,10 +394,19 @@ function initEkycPage() {
   var msgEl = document.getElementById('ekyc-msg');
   var agree = document.getElementById('ekyc-agree');
   var fullnameInput = document.getElementById('ekyc-fullname');
+  var phoneInput = document.getElementById('ekyc-phone');
   fullnameInput.value = user.name;
 
   var state = { front: null, back: null, selfie: null, stream: null };
   var sigPad = setupSignaturePad('sign-pad', 'btn-clear-sign');
+  var btnAutoSign = document.getElementById('btn-auto-sign');
+  if (btnAutoSign) {
+    btnAutoSign.addEventListener('click', function () {
+      if (!fullnameInput.value.trim()) { showFormMessage(msgEl, 'Vui lòng nhập họ tên trước khi dùng chữ ký nhanh.', true); return; }
+      sigPad.drawText(fullnameInput.value.trim());
+      checkReadyForSubmit();
+    });
+  }
 
   function checkReadyForContract() {
     if (state.front && state.back && state.selfie) {
@@ -462,6 +481,7 @@ function initEkycPage() {
     BM.saveEkycStep(user.id, {
       cccdFront: state.front, cccdBack: state.back, selfie: state.selfie,
       signatureDataUrl: sigPad.getDataURL(), fullName: fullnameInput.value.trim(),
+      phone: phoneInput.value.trim(),
       verifiedAt: Date.now(),
     });
     showFormMessage(msgEl, 'Xác minh eKYC thành công! Đang chuyển hướng...', false);
@@ -475,40 +495,159 @@ function initEkycPage() {
 // =========================================================================
 // Trang hợp đồng theo lượt đặt lịch — ký xác nhận sau khi "thanh toán"
 // =========================================================================
+// =========================================================================
+// Trang hợp đồng theo lượt đặt lịch — dùng văn bản hợp đồng thật của công ty,
+// hỗ trợ CẢ chế độ ký lần đầu VÀ chế độ xem lại hợp đồng đã ký bất cứ lúc nào
+// =========================================================================
+function contractBodyHTML(c) {
+  // c = { company, user, booking, phone }
+  var co = c.company || {};
+  return (
+    '<div class="contract-paper">' +
+    '<p style="text-align:center;font-weight:700;">CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>' +
+    '<p style="text-align:center;">Độc lập - Tự do - Hạnh phúc</p>' +
+    '<p style="text-align:center;font-weight:700;font-size:1.05rem;margin-top:14px;">HỢP ĐỒNG CUNG CẤP DỊCH VỤ ĐỒNG HÀNH</p>' +
+    '<p style="text-align:center;color:var(--ink-soft);font-size:.85rem;">Số hợp đồng: ' + c.booking.id + '</p>' +
+    '<p style="text-align:center;color:var(--ink-soft);font-size:.85rem;">TP.HCM, ngày ký: ' + new Date(c.booking.contract ? c.booking.contract.signedAt : Date.now()).toLocaleDateString('vi-VN') + '</p>' +
+
+    '<h4>I. THÔNG TIN CÁC BÊN</h4>' +
+    '<p><b>BÊN A (Đơn vị cung cấp dịch vụ)</b><br>' +
+    'Tên doanh nghiệp: ' + (co.company_legal_name || 'Boy-friend Material') + '<br>' +
+    'Địa chỉ: ' + (co.company_address || '') + '<br>' +
+    'Điện thoại: ' + (co.company_phone || '') + '<br>' +
+    'Email: ' + (co.company_email || '') + '<br>' +
+    'Đại diện: ' + (co.company_representative || '') + '</p>' +
+
+    '<p><b>BÊN B (Khách hàng)</b><br>' +
+    'Họ và tên: ' + c.user.name + '<br>' +
+    'Điện thoại: ' + (c.phone || '(chưa cung cấp)') + '<br>' +
+    'Email: ' + c.user.email + '<br>' +
+    'CCCD/Hộ chiếu: đã xác minh qua eKYC (ảnh lưu tại hồ sơ tài khoản)</p>' +
+
+    '<h4>Điều 1. Nội dung dịch vụ</h4>' +
+    '<p>Bên A cung cấp dịch vụ đồng hành xã giao theo nhu cầu khách hàng, bao gồm: đi ăn, uống cà phê, xem phim, tham gia sự kiện, mua sắm, du lịch, trò chuyện, chơi game hoặc các hoạt động giải trí khác theo thỏa thuận.<br>' +
+    '<i>Lưu ý: Dịch vụ không bao gồm bất kỳ hành vi vi phạm pháp luật hoặc trái đạo đức xã hội.</i></p>' +
+    '<p><b>Người đồng hành được chỉ định:</b> ' + c.booking.companionName + '<br><b>Dịch vụ đã chọn:</b> ' + c.booking.service + '</p>' +
+
+    '<h4>Điều 2. Thời gian và địa điểm</h4>' +
+    '<p>Ngày sử dụng: ' + (c.booking.date || '(chưa chọn)') + '<br>' +
+    'Thời gian: ' + (c.booking.timeRange || '(chưa chọn)') + '<br>' +
+    'Địa điểm: ' + (c.booking.location || '(chưa cung cấp — hai bên trao đổi thêm qua tin nhắn)') + '</p>' +
+
+    '<h4>Điều 3. Chi phí và thanh toán</h4>' +
+    '<p>Tổng chi phí: ' + c.booking.service + '.<br>' +
+    'Chi phí bao gồm phí dịch vụ và phí nền tảng. Không bao gồm chi phí ăn uống, vé sự kiện, khách sạn, phương tiện di chuyển hoặc các khoản phát sinh khác nếu hai bên không có thỏa thuận.</p>' +
+
+    '<h4>Điều 4. Quyền và nghĩa vụ của Bên A</h4>' +
+    '<p>- Cung cấp đúng người đồng hành theo hồ sơ đã xác minh.<br>- Bảo mật thông tin khách hàng.<br>- Hỗ trợ giải quyết khiếu nại.<br>- Thay thế người đồng hành trong trường hợp bất khả kháng.</p>' +
+
+    '<h4>Điều 5. Quyền và nghĩa vụ của khách hàng</h4>' +
+    '<p>- Thanh toán đúng thời hạn.<br>- Cung cấp thông tin trung thực.<br>- Tôn trọng người đồng hành.<br>- Không yêu cầu thực hiện các hành vi ngoài phạm vi dịch vụ.</p>' +
+
+    '<h4>Điều 6. Quyền và nghĩa vụ của người đồng hành</h4>' +
+    '<p>- Có mặt đúng giờ và thực hiện đúng nội dung dịch vụ.<br>- Ăn mặc lịch sự, giao tiếp văn minh.<br>- Có quyền từ chối các yêu cầu trái pháp luật hoặc không phù hợp.</p>' +
+
+    '<h4>Điều 7. Các hành vi bị nghiêm cấm</h4>' +
+    '<p style="font-weight:600;">Nghiêm cấm các hành vi: mại dâm, môi giới mại dâm, quấy rối tình dục, bạo lực, sử dụng ma túy, đánh bạc, mang vũ khí, ép buộc hoặc bất kỳ hành vi vi phạm pháp luật nào.</p>' +
+
+    '<h4>Điều 8. Chính sách hủy dịch vụ</h4>' +
+    '<p>- Hủy trước 48 giờ: hoàn 100%.<br>- Hủy trước 24 giờ: hoàn 50%.<br>- Hủy dưới 24 giờ: không hoàn tiền.<br>- Nếu lỗi từ Bên A: hoàn tiền hoặc bố trí người thay thế.</p>' +
+
+    '<h4>Điều 9. Bảo mật</h4>' +
+    '<p>Hai bên cam kết bảo mật thông tin cá nhân, hình ảnh và nội dung trao đổi. Không được công khai khi chưa có sự đồng ý của bên còn lại.</p>' +
+
+    '<h4>Điều 10. Cam kết</h4>' +
+    '<p>Hai bên xác nhận từ đủ 18 tuổi, có đầy đủ năng lực hành vi dân sự, tự nguyện ký kết và tuân thủ hợp đồng.</p>' +
+
+    '<h4>Điều 11. Giải quyết tranh chấp</h4>' +
+    '<p>Ưu tiên thương lượng. Nếu không đạt được thỏa thuận, tranh chấp được giải quyết theo quy định của pháp luật Việt Nam.</p>' +
+
+    '<h4>Điều 12. Hiệu lực</h4>' +
+    '<p>Hợp đồng có hiệu lực kể từ khi hai bên xác nhận và hoàn thành thanh toán; hết hiệu lực sau khi hoàn thành nghĩa vụ theo hợp đồng.</p>' +
+    '</div>'
+  );
+}
+
 function initContractPage() {
   var user = BM.currentUser();
   var params = new URLSearchParams(window.location.search);
   var bookingId = params.get('bookingId');
-  var detailsBox = document.getElementById('contract-details');
-  var msgEl = document.getElementById('contract-msg');
-  var agree = document.getElementById('contract-agree');
-  var btnSign = document.getElementById('btn-sign-contract');
-  var sigPad = setupSignaturePad('sign-pad', 'btn-clear-sign');
+  var app = document.getElementById('contract-app');
+  var titleEl = document.getElementById('contract-page-title');
+  var descEl = document.getElementById('contract-page-desc');
 
   if (!user || !bookingId) {
-    detailsBox.innerHTML = '<p>Không tìm thấy thông tin đặt lịch. Vui lòng quay lại trang hồ sơ và đặt lịch lại.</p>';
-    btnSign.style.display = 'none';
+    app.innerHTML = '<div class="form-card"><p>Không tìm thấy thông tin đặt lịch. Vui lòng quay lại trang hồ sơ và đặt lịch lại.</p></div>';
     return;
   }
   var booking = BM.getBookingById(bookingId);
   if (!booking) {
-    detailsBox.innerHTML = '<p>Không tìm thấy lượt đặt lịch này.</p>';
-    btnSign.style.display = 'none';
+    app.innerHTML = '<div class="form-card"><p>Không tìm thấy lượt đặt lịch này.</p></div>';
     return;
   }
 
-  detailsBox.innerHTML =
-    '<p><b>Khách hàng:</b> ' + user.name + ' (' + user.email + ')</p>' +
-    '<p><b>Người đồng hành:</b> ' + booking.companionName + '</p>' +
-    '<p><b>Dịch vụ:</b> ' + booking.service + '</p>' +
-    '<p><b>Ngày hẹn:</b> ' + (booking.date || 'chưa chọn') + (booking.timeRange ? (' · Khung giờ: ' + booking.timeRange) : '') + '</p>';
+  var ekyc = BM.getEkyc(user.id);
+  var phone = ekyc ? ekyc.phone : '';
 
-  btnSign.addEventListener('click', function () {
-    if (!agree.checked) { showFormMessage(msgEl, 'Vui lòng đồng ý với nội dung hợp đồng trước khi ký.', true); return; }
-    if (!sigPad || sigPad.isEmpty()) { showFormMessage(msgEl, 'Vui lòng ký tên vào ô chữ ký.', true); return; }
-    BM.signBookingContract(bookingId, sigPad.getDataURL(), user.name);
-    showFormMessage(msgEl, 'Đã ký hợp đồng và xác nhận đặt lịch thành công! Đang chuyển tới trang đơn hàng...', false);
-    setTimeout(function () { window.location.href = 'don-hang.html'; }, 900);
+  CONTENT.getSettings().then(function (settings) {
+    var ctx = { company: settings, user: user, booking: booking, phone: phone };
+    var bodyHtml = contractBodyHTML(ctx);
+
+    if (booking.contract) {
+      // ---- CHẾ ĐỘ XEM LẠI: hợp đồng đã ký, hiện bất cứ lúc nào, không cho sửa ----
+      if (titleEl) titleEl.textContent = 'Hợp đồng đã ký';
+      if (descEl) descEl.textContent = 'Đã ký lúc ' + new Date(booking.contract.signedAt).toLocaleString('vi-VN') + '. Bạn có thể xem lại bất cứ lúc nào.';
+      app.innerHTML =
+        '<div class="form-card">' + bodyHtml +
+        '<div style="margin-top:20px;border-top:1px solid var(--line);padding-top:16px;">' +
+        '<p style="font-weight:600;">Chữ ký xác nhận của Bên B:</p>' +
+        '<img src="' + booking.contract.signatureDataUrl + '" alt="Chữ ký" style="max-width:320px;border:1px solid var(--line);border-radius:8px;background:#fff;">' +
+        '<p style="margin-top:6px;color:var(--ink-soft);">Ký bởi: ' + booking.contract.fullName + ' — ' + new Date(booking.contract.signedAt).toLocaleString('vi-VN') + '</p>' +
+        '</div>' +
+        '<div style="display:flex;gap:10px;margin-top:20px;">' +
+        '<button type="button" class="btn btn-outline" onclick="window.print()">🖨️ In / Lưu PDF</button>' +
+        '<a href="don-hang.html" class="btn btn-outline">Quay lại Đơn hàng</a>' +
+        '</div></div>';
+      return;
+    }
+
+    // ---- CHẾ ĐỘ KÝ LẦN ĐẦU ----
+    app.innerHTML =
+      '<div class="form-card" style="max-height:320px;overflow-y:auto;margin-bottom:20px;">' + bodyHtml + '</div>' +
+      '<div class="form-card">' +
+      '<label style="display:flex;align-items:flex-start;gap:8px;font-size:.85rem;margin-bottom:10px;">' +
+      '<input type="checkbox" id="contract-agree"><span>Tôi đã đọc và đồng ý với toàn bộ nội dung hợp đồng trên.</span></label>' +
+      '<label style="font-size:.85rem;">Ký tên xác nhận (họ tên sẽ tự điền theo tài khoản, có thể sửa lại):</label>' +
+      '<input type="text" id="contract-signer-name" value="' + (ekyc && ekyc.fullName ? ekyc.fullName : user.name) + '" style="margin:8px 0;">' +
+      '<canvas id="sign-pad" width="560" height="160" style="border:1px dashed var(--line);border-radius:8px;width:100%;touch-action:none;background:#fff;margin:8px 0;"></canvas>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">' +
+      '<button type="button" id="btn-auto-sign" class="btn btn-primary btn-sm">✍️ Dùng họ tên làm chữ ký</button>' +
+      '<button type="button" id="btn-clear-sign" class="btn btn-outline btn-sm">Xoá chữ ký</button>' +
+      '</div>' +
+      '<div id="contract-msg" class="form-msg"></div>' +
+      '<button type="button" id="btn-sign-contract" class="btn btn-primary btn-block">Ký hợp đồng &amp; xác nhận đặt lịch</button>' +
+      '</div>';
+
+    var agree = document.getElementById('contract-agree');
+    var signerName = document.getElementById('contract-signer-name');
+    var btnSign = document.getElementById('btn-sign-contract');
+    var msgEl = document.getElementById('contract-msg');
+    var sigPad = setupSignaturePad('sign-pad', 'btn-clear-sign');
+    var btnAutoSign = document.getElementById('btn-auto-sign');
+    if (btnAutoSign) {
+      btnAutoSign.addEventListener('click', function () {
+        if (!signerName.value.trim()) { showFormMessage(msgEl, 'Vui lòng nhập họ tên trước.', true); return; }
+        sigPad.drawText(signerName.value.trim());
+      });
+    }
+
+    btnSign.addEventListener('click', function () {
+      if (!agree.checked) { showFormMessage(msgEl, 'Vui lòng đồng ý với nội dung hợp đồng trước khi ký.', true); return; }
+      if (!sigPad || sigPad.isEmpty()) { showFormMessage(msgEl, 'Vui lòng ký tên vào ô chữ ký.', true); return; }
+      BM.signBookingContract(bookingId, sigPad.getDataURL(), signerName.value.trim());
+      showFormMessage(msgEl, 'Đã ký hợp đồng và xác nhận đặt lịch thành công! Đang chuyển tới trang đơn hàng...', false);
+      setTimeout(function () { window.location.href = 'don-hang.html'; }, 900);
+    });
   });
 }
 function initOrdersPage() {
@@ -532,7 +671,7 @@ function initOrdersPage() {
       '<p style="margin-top:8px;color:var(--ink-soft);">Dịch vụ: ' + b.service + '</p>' +
       '<p style="color:var(--ink-soft);">Ngày: ' + (b.date || 'chưa chọn') + (b.timeRange ? (' · Khung giờ: ' + b.timeRange) : '') + '</p>' +
       '<p style="color:#8a93a6;font-size:.85rem;margin-top:6px;">Đặt lúc: ' + new Date(b.createdAt).toLocaleString('vi-VN') + '</p>' +
-      (needsSign ? '<a href="hop-dong.html?bookingId=' + b.id + '" class="btn btn-primary btn-sm" style="margin-top:10px;">Ký hợp đồng để xác nhận</a>' : '<p style="color:#1a7f3c;font-size:.85rem;margin-top:6px;">✓ Đã ký hợp đồng lúc ' + new Date(b.contract.signedAt).toLocaleString('vi-VN') + '</p>') +
+      (needsSign ? '<a href="hop-dong.html?bookingId=' + b.id + '" class="btn btn-primary btn-sm" style="margin-top:10px;">Ký hợp đồng để xác nhận</a>' : '<a href="hop-dong.html?bookingId=' + b.id + '" class="btn btn-outline btn-sm" style="margin-top:10px;">📄 Xem lại hợp đồng đã ký</a>') +
       '</div>';
   }).join('');
 }
