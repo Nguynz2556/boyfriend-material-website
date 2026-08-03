@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xác minh eKYC — Boyfriend Material</title>
+<meta name="description" content="Xác minh danh tính (eKYC) trước khi đặt lịch trên Boyfriend Material.">
+<meta property="og:title" content="Xác minh eKYC — Boyfriend Material">
+<meta property="og:description" content="Xác minh danh tính (eKYC) trước khi đặt lịch trên Boyfriend Material.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="images/og-cover.jpg">
+<link rel="icon" type="image/jpeg" href="images/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
+    <nav class="nav-links">
+      <a href="index.html">Trang chủ</a>
+      <a href="dich-vu.html">Dịch vụ</a>
+      <a href="ve-chung-toi.html">Về chúng tôi</a>
+      <a href="danh-sach.html">Người đồng hành</a>
+      <a href="lien-he.html">Liên hệ</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="dang-nhap.html" class="btn btn-outline btn-sm" data-auth-guest>Đăng nhập</a>
+      <a href="dang-ky.html" class="btn btn-primary btn-sm" data-auth-guest>Đăng ký</a>
+      <a href="tin-nhan.html" class="btn btn-outline btn-sm" data-auth-user style="display:none;">Tin nhắn</a>
+      <a href="don-hang.html" class="btn btn-outline btn-sm" data-auth-user style="display:none;">Đơn hàng</a>
+      <a href="#" class="btn btn-primary btn-sm" data-auth-user data-auth-logout style="display:none;">Đăng xuất</a>
+      <button class="nav-toggle" aria-label="Mở menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="section section--tight">
+    <div class="container" style="max-width:640px;">
+      <div class="section-head">
+        <span class="eyebrow center">Xác minh danh tính</span>
+        <h2>Xác minh eKYC</h2>
+        <p>Cần xác minh danh tính 1 lần trước khi đặt lịch, giúp bảo vệ an toàn cho cả khách hàng và người đồng hành.</p>
+      </div>
+
+      <div class="edit-note" style="margin-bottom:20px;">
+        Đây là quy trình eKYC DEMO cho mục đích minh hoạ giao diện: ảnh CCCD và khuôn mặt được lưu
+        ngay trên trình duyệt của bạn (localStorage), KHÔNG được gửi đi đâu, KHÔNG được đối chiếu với
+        cơ sở dữ liệu dân cư thật, và KHÔNG có kiểm tra chống giả mạo (liveness detection).
+        Khi triển khai thật, cần dùng nhà cung cấp eKYC được cấp phép (VNeID, FPT.AI, VNPT eKYC...)
+        và tuân thủ Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân — xem thêm trong HUONG-DAN.md.
+      </div>
+
+      <div id="ekyc-app">
+        <div class="form-card" style="margin-bottom:20px;">
+          <h3 style="font-size:1rem;margin-bottom:14px;">Bước 1: Ảnh CCCD/CMND</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label>Mặt trước CCCD</label>
+              <input type="file" id="cccd-front" accept="image/*">
+              <img id="cccd-front-preview" style="display:none;max-width:100%;border-radius:8px;margin-top:8px;">
+            </div>
+            <div class="field">
+              <label>Mặt sau CCCD</label>
+              <input type="file" id="cccd-back" accept="image/*">
+              <img id="cccd-back-preview" style="display:none;max-width:100%;border-radius:8px;margin-top:8px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:20px;">
+          <h3 style="font-size:1rem;margin-bottom:14px;">Bước 2: Quét khuôn mặt</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:12px;">Bấm "Mở camera", nhìn thẳng vào khung hình rồi bấm "Chụp".</p>
+          <video id="ekyc-video" autoplay playsinline style="width:100%;max-width:360px;border-radius:12px;background:#000;display:none;"></video>
+          <canvas id="ekyc-canvas" style="display:none;"></canvas>
+          <img id="selfie-preview" style="display:none;max-width:360px;width:100%;border-radius:12px;margin-top:8px;">
+          <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+            <button type="button" id="btn-open-cam" class="btn btn-outline btn-sm">Mở camera</button>
+            <button type="button" id="btn-capture" class="btn btn-primary btn-sm" style="display:none;">Chụp ảnh</button>
+            <button type="button" id="btn-retake" class="btn btn-outline btn-sm" style="display:none;">Chụp lại</button>
+          </div>
+          <p id="cam-error" style="color:#b42318;font-size:.85rem;margin-top:8px;display:none;"></p>
+        </div>
+
+        <div id="ekyc-step3" class="form-card" style="display:none;">
+          <h3 style="font-size:1rem;margin-bottom:14px;">Bước 3: Hợp đồng &amp; chữ ký xác nhận</h3>
+          <div style="max-height:200px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:14px;font-size:.82rem;color:var(--ink-soft);margin-bottom:14px;">
+            <p><b>HỢP ĐỒNG SỬ DỤNG DỊCH VỤ NỀN TẢNG BOYFRIEND MATERIAL</b></p>
+            <p>Bằng việc ký xác nhận bên dưới, tôi cam kết: (1) thông tin CCCD và ảnh khuôn mặt cung cấp là chính xác, thuộc về chính tôi; (2) tôi từ 18 tuổi trở lên; (3) tôi cam kết tuân thủ Quy tắc ứng xử của nền tảng, không thực hiện các hành vi vi phạm pháp luật hiện hành trong quá trình sử dụng dịch vụ; (4) tôi hiểu nền tảng có quyền từ chối/huỷ tài khoản nếu phát hiện vi phạm.</p>
+            <p><i>(Đây là văn bản mẫu — bạn nên nhờ luật sư soạn lại nội dung hợp đồng chính thức trước khi dùng thật.)</i></p>
+          </div>
+          <div class="field"><label>Họ tên đầy đủ (ghi rõ để xác nhận)</label><input type="text" id="ekyc-fullname"></div>
+          <label style="display:flex;align-items:flex-start;gap:8px;font-size:.85rem;margin:10px 0;">
+            <input type="checkbox" id="ekyc-agree" style="margin-top:3px;">
+            <span>Tôi đã đọc và đồng ý với nội dung hợp đồng ở trên.</span>
+          </label>
+          <label style="font-size:.85rem;">Ký tên bên dưới (dùng chuột hoặc ngón tay):</label>
+          <canvas id="sign-pad" width="560" height="160" style="border:1px dashed var(--line);border-radius:8px;width:100%;touch-action:none;background:#fff;margin:8px 0;"></canvas>
+          <div style="display:flex;gap:10px;">
+            <button type="button" id="btn-clear-sign" class="btn btn-outline btn-sm">Xoá chữ ký</button>
+          </div>
+        </div>
+
+        <div id="ekyc-msg" class="form-msg"></div>
+        <button type="button" id="btn-submit-ekyc" class="btn btn-primary btn-block" style="margin-top:20px;" disabled>Hoàn tất xác minh &amp; ký hợp đồng</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
+      <p>Nền tảng kết nối bạn với người đồng hành đáng tin cậy cho mọi khoảnh khắc cuộc sống.</p>
+      <div class="footer-social"><a href="https://facebook.com/" target="_blank" rel="noopener">f</a><a href="https://instagram.com/" target="_blank" rel="noopener">◎</a><a href="https://youtube.com/" target="_blank" rel="noopener">▶</a></div>
+    </div>
+    <div><h4>Dịch vụ</h4><ul><li><a href="dich-vu.html">Đi ăn / Cafe</a></li><li><a href="dich-vu.html">Du lịch</a></li><li><a href="dich-vu.html">Sự kiện</a></li><li><a href="dich-vu.html">Mua sắm</a></li></ul></div>
+    <div><h4>Về chúng tôi</h4><ul><li><a href="ve-chung-toi.html">Sứ mệnh</a></li><li><a href="ve-chung-toi.html">Quy trình hoạt động</a></li><li><a href="ve-chung-toi.html">An toàn & Bảo mật</a></li><li><a href="lien-he.html">Liên hệ</a></li></ul></div>
+    <div><h4>Hỗ trợ</h4><ul><li><a href="lien-he.html">Trung tâm trợ giúp</a></li><li><a href="lien-he.html">Câu hỏi thường gặp</a></li><li><a href="lien-he.html">Hỗ trợ 24/7</a></li></ul></div>
+    <div>
+      <h4>Đăng ký nhận tin</h4>
+      <p style="font-size:.85rem; color:#9FADCB;">Nhận thông tin mới nhất về dịch vụ và ưu đãi đặc biệt.</p>
+      <form class="footer-news" action="https://formspree.io/f/YOUR_FORM_ID" method="POST"><input type="email" name="email" placeholder="Nhập email của bạn" required><button type="submit">→</button></form>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Boyfriend Material. Bảo lưu mọi quyền.</span>
+    <span><a href="#">Điều khoản sử dụng</a> · <a href="#">Chính sách bảo mật</a></span>
+  </div>
+</footer>
+
+<script src="js/store.js"></script>
+<script src="js/pages.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
