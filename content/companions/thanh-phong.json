@@ -1,0 +1,42 @@
+{
+  "id": 6,
+  "slug": "thanh-phong",
+  "name": "Thanh Phong",
+  "age": 24,
+  "loc": "TP. Hồ Chí Minh",
+  "price": 540000,
+  "rating": 4.8,
+  "reviews": 102,
+  "bookings": 198,
+  "height": "1m79",
+  "weight": "69kg",
+  "job": "Sinh viên năm cuối / Part-time model",
+  "activity": "Sự kiện",
+  "bio": "Mình là Phong, năng động và thích thử những điều mới. Mình có thể đồng hành cùng bạn trong các sự kiện, buổi tiệc hoặc đơn giản là một buổi cafe cuối tuần.",
+  "hobbies": [
+    "Gym",
+    "Thời trang",
+    "Nhiếp ảnh",
+    "Âm nhạc",
+    "Du lịch"
+  ],
+  "birth": "25/07/2001",
+  "hometown": "Bình Dương",
+  "edu": "Đại học",
+  "personality": [
+    "Năng động",
+    "Tự tin",
+    "Hài hước",
+    "Thân thiện"
+  ],
+  "ekycVerified": true,
+  "avatar": "images/uploads/companion-6.jpg",
+  "cover": "images/uploads/companion-6-cover.jpg",
+  "gallery": [
+    "images/uploads/companion-6-1.jpg",
+    "images/uploads/companion-6-2.jpg",
+    "images/uploads/companion-6-3.jpg",
+    "images/uploads/companion-6-4.jpg",
+    "images/uploads/companion-6-5.jpg"
+  ]
+}

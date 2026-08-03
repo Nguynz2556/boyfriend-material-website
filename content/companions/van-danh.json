@@ -1,0 +1,43 @@
+{
+  "id": 2,
+  "slug": "van-danh",
+  "name": "Văn Danh",
+  "age": 27,
+  "loc": "Hà Nội",
+  "price": 550000,
+  "rating": 4.8,
+  "reviews": 98,
+  "bookings": 214,
+  "height": "1m80",
+  "weight": "74kg",
+  "job": "Kỹ sư phần mềm",
+  "activity": "Du lịch",
+  "bio": "Mình là Danh, thích khám phá những vùng đất mới và luôn sẵn sàng đồng hành cùng bạn trong những chuyến đi ngắn ngày hay dài ngày. Mình điềm đạm, biết lắng nghe và tôn trọng ranh giới của người khác.",
+  "hobbies": [
+    "Du lịch",
+    "Nhiếp ảnh",
+    "Leo núi",
+    "Cafe",
+    "Công nghệ",
+    "Bơi lội"
+  ],
+  "birth": "03/11/1998",
+  "hometown": "Hải Phòng",
+  "edu": "Đại học",
+  "personality": [
+    "Điềm đạm",
+    "Kiên nhẫn",
+    "Lắng nghe",
+    "Tin cậy"
+  ],
+  "ekycVerified": true,
+  "avatar": "images/uploads/companion-2.jpg",
+  "cover": "images/uploads/companion-2-cover.jpg",
+  "gallery": [
+    "images/uploads/companion-2-1.jpg",
+    "images/uploads/companion-2-2.jpg",
+    "images/uploads/companion-2-3.jpg",
+    "images/uploads/companion-2-4.jpg",
+    "images/uploads/companion-2-5.jpg"
+  ]
+}

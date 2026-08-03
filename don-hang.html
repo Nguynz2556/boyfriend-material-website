@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đơn hàng của tôi — Boyfriend Material</title>
+<meta name="description" content="Xem lại lịch sử đặt lịch với người đồng hành trên Boyfriend Material.">
+<meta property="og:title" content="Đơn hàng của tôi — Boyfriend Material">
+<meta property="og:description" content="Xem lại lịch sử đặt lịch với người đồng hành trên Boyfriend Material.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="images/og-cover.jpg">
+<link rel="icon" type="image/jpeg" href="images/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:40px;width:40px;border-radius:8px;object-fit:cover;"> Boyfriend<br><small>MORE THAN A DATE, A COMPANION</small></a>
+    <nav class="nav-links">
+      <a href="index.html">Trang chủ</a>
+      <a href="dich-vu.html">Dịch vụ</a>
+      <a href="ve-chung-toi.html">Về chúng tôi</a>
+      <a href="danh-sach.html">Người đồng hành</a>
+      <a href="lien-he.html">Liên hệ</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="dang-nhap.html" class="btn btn-outline btn-sm" data-auth-guest>Đăng nhập</a>
+      <a href="dang-ky.html" class="btn btn-primary btn-sm" data-auth-guest>Đăng ký</a>
+      <a href="tin-nhan.html" class="btn btn-outline btn-sm" data-auth-user style="display:none;">Tin nhắn</a>
+      <a href="don-hang.html" class="btn btn-outline btn-sm" data-auth-user style="display:none;">Đơn hàng</a>
+      <a href="#" class="btn btn-primary btn-sm" data-auth-user data-auth-logout style="display:none;">Đăng xuất</a>
+      <button class="nav-toggle" aria-label="Mở menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="section section--tight">
+    <div class="container" style="max-width:700px;">
+      <div class="section-head">
+        <span class="eyebrow center">Tài khoản</span>
+        <h2>Đơn hàng của tôi</h2>
+        <p>Xem lại lịch sử đặt lịch (giỏ hàng) của bạn.</p>
+      </div>
+      <div id="orders-app"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="brand"><img src="images/logo.jpg" alt="Boyfriend Material" style="height:34px;width:34px;border-radius:7px;object-fit:cover;"> Boyfriend Material</div>
+      <p>Nền tảng kết nối bạn với người đồng hành đáng tin cậy cho mọi khoảnh khắc cuộc sống.</p>
+      <div class="footer-social"><a href="https://facebook.com/" target="_blank" rel="noopener">f</a><a href="https://instagram.com/" target="_blank" rel="noopener">◎</a><a href="https://youtube.com/" target="_blank" rel="noopener">▶</a></div>
+    </div>
+    <div><h4>Dịch vụ</h4><ul><li><a href="dich-vu.html">Đi ăn / Cafe</a></li><li><a href="dich-vu.html">Du lịch</a></li><li><a href="dich-vu.html">Sự kiện</a></li><li><a href="dich-vu.html">Mua sắm</a></li></ul></div>
+    <div><h4>Về chúng tôi</h4><ul><li><a href="ve-chung-toi.html">Sứ mệnh</a></li><li><a href="ve-chung-toi.html">Quy trình hoạt động</a></li><li><a href="ve-chung-toi.html">An toàn & Bảo mật</a></li><li><a href="lien-he.html">Liên hệ</a></li></ul></div>
+    <div><h4>Hỗ trợ</h4><ul><li><a href="lien-he.html">Trung tâm trợ giúp</a></li><li><a href="lien-he.html">Câu hỏi thường gặp</a></li><li><a href="lien-he.html">Hỗ trợ 24/7</a></li></ul></div>
+    <div>
+      <h4>Đăng ký nhận tin</h4>
+      <p style="font-size:.85rem; color:#9FADCB;">Nhận thông tin mới nhất về dịch vụ và ưu đãi đặc biệt.</p>
+      <form class="footer-news" action="https://formspree.io/f/YOUR_FORM_ID" method="POST"><input type="email" name="email" placeholder="Nhập email của bạn" required><button type="submit">→</button></form>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Boyfriend Material. Bảo lưu mọi quyền.</span>
+    <span><a href="#">Điều khoản sử dụng</a> · <a href="#">Chính sách bảo mật</a></span>
+  </div>
+</footer>
+
+<script src="js/store.js"></script>
+<script src="js/pages.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "id": 7,
+  "slug": "anh-phuc",
+  "name": "Anh Phúc",
+  "age": 29,
+  "loc": "Đà Nẵng",
+  "price": 580000,
+  "rating": 4.9,
+  "reviews": 143,
+  "bookings": 289,
+  "height": "1m81",
+  "weight": "75kg",
+  "job": "Quản lý nhà hàng",
+  "activity": "Mua sắm",
+  "bio": "Mình là Phúc, có gu thẩm mỹ tốt và thích tư vấn, đồng hành cùng bạn trong những buổi mua sắm hoặc dạo phố. Mình luôn lắng nghe để hiểu bạn cần gì.",
+  "hobbies": [
+    "Thời trang",
+    "Ẩm thực",
+    "Cafe",
+    "Du lịch",
+    "Nấu ăn"
+  ],
+  "birth": "02/01/1996",
+  "hometown": "Quảng Nam",
+  "edu": "Đại học",
+  "personality": [
+    "Tinh tế",
+    "Chu đáo",
+    "Đáng tin cậy",
+    "Lịch thiệp"
+  ],
+  "ekycVerified": true,
+  "avatar": "images/uploads/companion-7.jpg",
+  "cover": "images/uploads/companion-7-cover.jpg",
+  "gallery": [
+    "images/uploads/companion-7-1.jpg",
+    "images/uploads/companion-7-2.jpg",
+    "images/uploads/companion-7-3.jpg",
+    "images/uploads/companion-7-4.jpg",
+    "images/uploads/companion-7-5.jpg"
+  ]
+}

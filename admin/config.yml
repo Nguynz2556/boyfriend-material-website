@@ -1,0 +1,106 @@
+# =============================================================================
+# CẤU HÌNH DECAP CMS — Boyfriend Material
+# =============================================================================
+# File này định nghĩa những gì bạn sửa được trong trang /admin (không cần code).
+# XEM HUONG-DAN.md mục 17 để biết cách kết nối phần "backend" bên dưới với
+# GitHub/Netlify — bắt buộc phải làm bước đó thì trang /admin mới đăng nhập
+# và lưu bài được, config này KHÔNG tự hoạt động nếu chưa nối backend.
+# =============================================================================
+
+backend:
+  name: git-gateway   # Dùng Netlify Identity + Git Gateway (xem HUONG-DAN.md mục 17, Cách A)
+  branch: main         # Đổi thành "master" nếu nhánh chính của bạn tên là master
+
+# Nơi lưu ảnh khi bạn tải lên trong trang admin
+media_folder: "images/uploads"
+public_folder: "images/uploads"
+
+# Bật xem trước bên phải màn hình khi soạn nội dung
+publish_mode: simple
+
+collections:
+
+  # ---------------------------------------------------------------------
+  # 1. NGƯỜI ĐỒNG HÀNH — sửa thông tin + ảnh từng người, không cần code
+  # ---------------------------------------------------------------------
+  - name: "companions"
+    label: "Người đồng hành"
+    label_singular: "Người đồng hành"
+    folder: "content/companions"
+    create: true
+    format: "json"
+    extension: "json"
+    identifier_field: "name"
+    fields:
+      - { label: "ID (số thứ tự, không trùng)", name: "id", widget: "number" }
+      - { label: "Đường dẫn (slug, viết liền không dấu, ví dụ hoang-nguyen)", name: "slug", widget: "string" }
+      - { label: "Tên", name: "name", widget: "string" }
+      - { label: "Tuổi", name: "age", widget: "number" }
+      - label: "Khu vực"
+        name: "loc"
+        widget: "select"
+        options: ["TP. Hồ Chí Minh", "Hà Nội", "Đà Nẵng"]
+      - { label: "Giá / giờ (VNĐ)", name: "price", widget: "number" }
+      - { label: "Đánh giá (1-5)", name: "rating", widget: "number", value_type: "float", min: 1, max: 5 }
+      - { label: "Số lượt đánh giá", name: "reviews", widget: "number" }
+      - { label: "Số lượt đặt", name: "bookings", widget: "number" }
+      - { label: "Chiều cao", name: "height", widget: "string" }
+      - { label: "Cân nặng", name: "weight", widget: "string" }
+      - { label: "Nghề nghiệp", name: "job", widget: "string" }
+      - label: "Hoạt động chính"
+        name: "activity"
+        widget: "select"
+        options: ["Đi ăn / Cafe", "Du lịch", "Sự kiện", "Xem phim", "Mua sắm", "Chơi game"]
+      - { label: "Giới thiệu", name: "bio", widget: "text" }
+      - label: "Sở thích"
+        name: "hobbies"
+        widget: "list"
+      - label: "Tính cách (đúng 4 mục)"
+        name: "personality"
+        widget: "list"
+      - { label: "Ngày sinh", name: "birth", widget: "string" }
+      - { label: "Quê quán", name: "hometown", widget: "string" }
+      - { label: "Học vấn", name: "edu", widget: "string" }
+      - { label: "Ảnh đại diện (avatar)", name: "avatar", widget: "image" }
+      - { label: "Ảnh bìa", name: "cover", widget: "image" }
+      - label: "Thư viện ảnh (5 ảnh)"
+        name: "gallery"
+        widget: "list"
+        field: { label: "Ảnh", name: "image", widget: "image" }
+      - { label: "Đã xác minh eKYC?", name: "ekycVerified", widget: "boolean", default: true }
+
+  # ---------------------------------------------------------------------
+  # 2. DANH SÁCH HIỂN THỊ — sau khi thêm người mới ở trên, PHẢI thêm slug
+  #    của người đó vào đây thì mới hiện lên site (xem HUONG-DAN.md mục 17)
+  # ---------------------------------------------------------------------
+  - name: "manifest"
+    label: "Danh sách hiển thị trên site"
+    files:
+      - name: "manifest"
+        label: "Danh sách slug đang hiển thị"
+        file: "content/manifest.json"
+        fields:
+          - label: "Slug của từng người (phải khớp đúng ô 'Đường dẫn' ở mục Người đồng hành)"
+            name: "slugs"
+            widget: "list"
+
+  # ---------------------------------------------------------------------
+  # 3. THÔNG TIN CHUNG CỦA SITE — trang chủ + trang liên hệ
+  # ---------------------------------------------------------------------
+  - name: "settings"
+    label: "Thông tin chung"
+    files:
+      - name: "settings"
+        label: "Trang chủ & Liên hệ"
+        file: "content/settings.json"
+        fields:
+          - { label: "Tiêu đề trang chủ - dòng 1", name: "hero_title_line1", widget: "string" }
+          - { label: "Tiêu đề trang chủ - chữ nhấn (màu vàng)", name: "hero_title_accent", widget: "string" }
+          - { label: "Mô tả ngắn trang chủ", name: "hero_desc", widget: "text" }
+          - { label: "Số hotline", name: "contact_hotline", widget: "string" }
+          - { label: "Email liên hệ", name: "contact_email", widget: "string" }
+          - { label: "Địa chỉ", name: "contact_address", widget: "string" }
+          - { label: "Giờ làm việc", name: "contact_hours", widget: "string" }
+          - { label: "Link Facebook", name: "facebook_url", widget: "string" }
+          - { label: "Link Instagram", name: "instagram_url", widget: "string" }
+          - { label: "Link YouTube", name: "youtube_url", widget: "string" }

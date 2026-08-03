@@ -1,0 +1,42 @@
+{
+  "id": 3,
+  "slug": "minh-nhut",
+  "name": "Minh Nhựt",
+  "age": 25,
+  "loc": "Đà Nẵng",
+  "price": 560000,
+  "rating": 5.0,
+  "reviews": 156,
+  "bookings": 301,
+  "height": "1m76",
+  "weight": "68kg",
+  "job": "Nhân viên ngân hàng",
+  "activity": "Sự kiện",
+  "bio": "Mình là Nhựt, thích tham gia các sự kiện, tiệc tùng và luôn biết cách tạo không khí vui vẻ. Với mình, mỗi buổi hẹn là một cơ hội để tạo nên kỷ niệm đáng nhớ cho người đồng hành.",
+  "hobbies": [
+    "Sự kiện",
+    "Âm nhạc",
+    "Khiêu vũ",
+    "Ẩm thực",
+    "Thời trang"
+  ],
+  "birth": "20/02/1999",
+  "hometown": "Huế",
+  "edu": "Đại học",
+  "personality": [
+    "Năng động",
+    "Hài hước",
+    "Tinh tế",
+    "Chu đáo"
+  ],
+  "ekycVerified": true,
+  "avatar": "images/uploads/companion-3.jpg",
+  "cover": "images/uploads/companion-3-cover.jpg",
+  "gallery": [
+    "images/uploads/companion-3-1.jpg",
+    "images/uploads/companion-3-2.jpg",
+    "images/uploads/companion-3-3.jpg",
+    "images/uploads/companion-3-4.jpg",
+    "images/uploads/companion-3-5.jpg"
+  ]
+}

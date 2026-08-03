@@ -1,0 +1,42 @@
+{
+  "id": 5,
+  "slug": "thanh-trung",
+  "name": "Thành Trung",
+  "age": 26,
+  "loc": "Hà Nội",
+  "price": 520000,
+  "rating": 4.9,
+  "reviews": 88,
+  "bookings": 175,
+  "height": "1m77",
+  "weight": "71kg",
+  "job": "Nhân viên truyền thông",
+  "activity": "Đi ăn / Cafe",
+  "bio": "Mình là Trung, thích trò chuyện về mọi chủ đề trong cuộc sống, từ công việc đến sở thích cá nhân. Mình luôn cố gắng làm cho buổi gặp gỡ trở nên thoải mái và tự nhiên nhất.",
+  "hobbies": [
+    "Ẩm thực",
+    "Podcast",
+    "Chạy bộ",
+    "Du lịch",
+    "Cafe"
+  ],
+  "birth": "14/04/1999",
+  "hometown": "Nam Định",
+  "edu": "Đại học",
+  "personality": [
+    "Cởi mở",
+    "Hài hước",
+    "Kiên nhẫn",
+    "Chân thành"
+  ],
+  "ekycVerified": true,
+  "avatar": "images/uploads/companion-5.jpg",
+  "cover": "images/uploads/companion-5-cover.jpg",
+  "gallery": [
+    "images/uploads/companion-5-1.jpg",
+    "images/uploads/companion-5-2.jpg",
+    "images/uploads/companion-5-3.jpg",
+    "images/uploads/companion-5-4.jpg",
+    "images/uploads/companion-5-5.jpg"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": 8,
+  "slug": "quoc-viet",
+  "name": "Quốc Việt",
+  "age": 27,
+  "loc": "Hà Nội",
+  "price": 570000,
+  "rating": 4.7,
+  "reviews": 76,
+  "bookings": 150,
+  "height": "1m78",
+  "weight": "72kg",
+  "job": "Nhân viên IT",
+  "activity": "Chơi game",
+  "bio": "Mình là Việt, mê game và công nghệ nhưng cũng rất thích trò chuyện, chia sẻ về cuộc sống. Nếu bạn tìm một người đồng hành thoải mái, dễ nói chuyện, mình luôn sẵn sàng.",
+  "hobbies": [
+    "Game",
+    "Công nghệ",
+    "Cafe",
+    "Phim ảnh",
+    "Board game"
+  ],
+  "birth": "19/10/1998",
+  "hometown": "Vĩnh Phúc",
+  "edu": "Đại học",
+  "personality": [
+    "Vui tính",
+    "Điềm tĩnh",
+    "Am hiểu",
+    "Kiên nhẫn"
+  ],
+  "ekycVerified": true,
+  "avatar": "images/uploads/companion-8.jpg",
+  "cover": "images/uploads/companion-8-cover.jpg",
+  "gallery": [
+    "images/uploads/companion-8-1.jpg",
+    "images/uploads/companion-8-2.jpg",
+    "images/uploads/companion-8-3.jpg",
+    "images/uploads/companion-8-4.jpg",
+    "images/uploads/companion-8-5.jpg"
+  ]
+}
