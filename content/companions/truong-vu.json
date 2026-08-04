@@ -1,18 +1,17 @@
 {
-  "id": 9,
-  "slug": "truong-vu",
-  "name": "Trường Vũ",
-  "age": 26,
   "loc": "TP. Hồ Chí Minh",
-  "price": 530000,
-  "rating": 5.0,
-  "reviews": 110,
-  "bookings": 230,
   "height": "1m80",
-  "weight": "73kg",
-  "job": "Huấn luyện viên thể hình",
-  "activity": "Đi ăn / Cafe",
   "bio": "Mình là Vũ, năng lượng tích cực và thích truyền cảm hứng sống lành mạnh. Mình có thể đồng hành cùng bạn trong các hoạt động thể thao nhẹ nhàng, cafe hoặc chỉ đơn giản là trò chuyện.",
+  "price": 530000,
+  "name": "Trường Vũ",
+  "slug": "truong-vu",
+  "personality": [
+    "Tích cực",
+    "Kỷ luật",
+    "Thân thiện",
+    "Truyền cảm hứng"
+  ],
+  "activity": "Đi ăn / Cafe",
   "hobbies": [
     "Thể thao",
     "Dinh dưỡng",
@@ -20,23 +19,22 @@
     "Âm nhạc",
     "Cafe"
   ],
-  "birth": "30/05/1999",
   "hometown": "Long An",
-  "edu": "Đại học",
-  "personality": [
-    "Tích cực",
-    "Kỷ luật",
-    "Thân thiện",
-    "Truyền cảm hứng"
-  ],
-  "ekycVerified": true,
-  "avatar": "images/uploads/companion-9.jpg",
-  "cover": "images/uploads/companion-9-cover.jpg",
   "gallery": [
-    "images/uploads/companion-9-1.jpg",
-    "images/uploads/companion-9-2.jpg",
-    "images/uploads/companion-9-3.jpg",
-    "images/uploads/companion-9-4.jpg",
-    "images/uploads/companion-9-5.jpg"
-  ]
+    "images/uploads/22d6573b-dd71-41fd-a328-631a9b83ff31.jpg",
+    "images/uploads/a8c3e93f-e55c-431a-abb4-cfd69d288e06.jpg",
+    "images/uploads/6c463a24-0c55-4fe2-9b19-572b1200964c.jpg"
+  ],
+  "edu": "Đại học",
+  "cover": "images/uploads/7.png",
+  "ekycVerified": true,
+  "weight": "73kg",
+  "avatar": "images/uploads/9.png",
+  "bookings": 230,
+  "reviews": 110,
+  "id": 9,
+  "rating": 5,
+  "job": "Huấn luyện viên thể hình",
+  "birth": "30/05/1999",
+  "age": 26
 }
