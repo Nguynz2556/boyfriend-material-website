@@ -1,18 +1,17 @@
 {
-  "id": 2,
-  "slug": "van-danh",
-  "name": "Văn Danh",
-  "age": 27,
   "loc": "Hà Nội",
-  "price": 550000,
-  "rating": 4.8,
-  "reviews": 98,
-  "bookings": 214,
   "height": "1m80",
-  "weight": "74kg",
-  "job": "Kỹ sư phần mềm",
-  "activity": "Du lịch",
   "bio": "Mình là Danh, thích khám phá những vùng đất mới và luôn sẵn sàng đồng hành cùng bạn trong những chuyến đi ngắn ngày hay dài ngày. Mình điềm đạm, biết lắng nghe và tôn trọng ranh giới của người khác.",
+  "price": 550000,
+  "name": "Văn Danh",
+  "slug": "van-danh",
+  "personality": [
+    "Điềm đạm",
+    "Kiên nhẫn",
+    "Lắng nghe",
+    "Tin cậy"
+  ],
+  "activity": "Du lịch",
   "hobbies": [
     "Du lịch",
     "Nhiếp ảnh",
@@ -21,23 +20,23 @@
     "Công nghệ",
     "Bơi lội"
   ],
-  "birth": "03/11/1998",
   "hometown": "Hải Phòng",
-  "edu": "Đại học",
-  "personality": [
-    "Điềm đạm",
-    "Kiên nhẫn",
-    "Lắng nghe",
-    "Tin cậy"
-  ],
-  "ekycVerified": true,
-  "avatar": "images/uploads/companion-2.jpg",
-  "cover": "images/uploads/companion-2-cover.jpg",
   "gallery": [
-    "images/uploads/companion-2-1.jpg",
-    "images/uploads/companion-2-2.jpg",
-    "images/uploads/companion-2-3.jpg",
-    "images/uploads/companion-2-4.jpg",
-    "images/uploads/companion-2-5.jpg"
-  ]
+    "images/uploads/1785648556061_2882336867311354951_g3327100699746381419_98ffa1fcec69a1b9d2331cc0febd53d0.jpg",
+    "images/uploads/1785648556247_2882336867311354951_g3327100699746381419_3999a8fe2569ce2d0e8ae84a9ec4b2b3.jpg",
+    "images/uploads/1785648557060_2882336867311354951_g3327100699746381419_e379274da6779760caa793d37b198fae.jpg",
+    "images/uploads/1785648556783_2882336867311354951_g3327100699746381419_a7ed42f8bce5027f4601e195fef2ee92.jpg"
+  ],
+  "edu": "Đại học",
+  "cover": "images/uploads/8.png",
+  "ekycVerified": true,
+  "weight": "74kg",
+  "avatar": "images/uploads/2.png",
+  "bookings": 214,
+  "reviews": 98,
+  "id": 2,
+  "rating": 4.8,
+  "job": "Kỹ sư phần mềm",
+  "birth": "03/11/1998",
+  "age": 27
 }
