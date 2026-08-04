@@ -1,18 +1,17 @@
 {
-  "id": 4,
-  "slug": "huy-hoang",
-  "name": "Huy Hoàng",
-  "age": 28,
   "loc": "TP. Hồ Chí Minh",
-  "price": 600000,
-  "rating": 4.7,
-  "reviews": 121,
-  "bookings": 260,
   "height": "1m82",
-  "weight": "76kg",
-  "job": "Freelancer thiết kế",
-  "activity": "Xem phim",
   "bio": "Mình là Hoàng, một người trầm tính nhưng dễ gần. Mình thích những buổi xem phim thư giãn, trò chuyện nhẹ nhàng và đơn giản là ở bên cạnh, lắng nghe bạn chia sẻ.",
+  "price": 600000,
+  "name": "Huy Hoàng",
+  "slug": "huy-hoang",
+  "personality": [
+    "Trầm tính",
+    "Sâu sắc",
+    "Chu đáo",
+    "Sáng tạo"
+  ],
+  "activity": "Xem phim",
   "hobbies": [
     "Điện ảnh",
     "Vẽ",
@@ -20,23 +19,22 @@
     "Sách",
     "Nhạc indie"
   ],
-  "birth": "08/09/1997",
   "hometown": "Cần Thơ",
-  "edu": "Cao đẳng",
-  "personality": [
-    "Trầm tính",
-    "Sâu sắc",
-    "Chu đáo",
-    "Sáng tạo"
-  ],
-  "ekycVerified": true,
-  "avatar": "images/uploads/companion-4.jpg",
-  "cover": "images/uploads/companion-4-cover.jpg",
   "gallery": [
-    "images/uploads/companion-4-1.jpg",
-    "images/uploads/companion-4-2.jpg",
-    "images/uploads/companion-4-3.jpg",
-    "images/uploads/companion-4-4.jpg",
-    "images/uploads/companion-4-5.jpg"
-  ]
+    "images/uploads/1785647903912_2882336867311354951_g3327100699746381419_828252a8152c5d88d20ce26548b2d0e4.jpg",
+    "images/uploads/8.png",
+    "images/uploads/1785647957042_2882336867311354951_g3327100699746381419_46931a139e265cbdfc3c47116265aa96.jpg"
+  ],
+  "edu": "Cao đẳng",
+  "cover": "images/uploads/4.png",
+  "ekycVerified": true,
+  "weight": "76kg",
+  "avatar": "images/uploads/8.png",
+  "bookings": 260,
+  "reviews": 121,
+  "id": 4,
+  "rating": 4.7,
+  "job": "Freelancer thiết kế",
+  "birth": "08/09/1997",
+  "age": 28
 }
