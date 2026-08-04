@@ -1,18 +1,17 @@
 {
-  "id": 8,
-  "slug": "quoc-viet",
-  "name": "Quốc Việt",
-  "age": 27,
   "loc": "Hà Nội",
-  "price": 570000,
-  "rating": 4.7,
-  "reviews": 76,
-  "bookings": 150,
   "height": "1m78",
-  "weight": "72kg",
-  "job": "Nhân viên IT",
-  "activity": "Chơi game",
   "bio": "Mình là Việt, mê game và công nghệ nhưng cũng rất thích trò chuyện, chia sẻ về cuộc sống. Nếu bạn tìm một người đồng hành thoải mái, dễ nói chuyện, mình luôn sẵn sàng.",
+  "price": 570000,
+  "name": "Quốc Việt",
+  "slug": "quoc-viet",
+  "personality": [
+    "Vui tính",
+    "Điềm tĩnh",
+    "Am hiểu",
+    "Kiên nhẫn"
+  ],
+  "activity": "Chơi game",
   "hobbies": [
     "Game",
     "Công nghệ",
@@ -20,23 +19,22 @@
     "Phim ảnh",
     "Board game"
   ],
-  "birth": "19/10/1998",
   "hometown": "Vĩnh Phúc",
-  "edu": "Đại học",
-  "personality": [
-    "Vui tính",
-    "Điềm tĩnh",
-    "Am hiểu",
-    "Kiên nhẫn"
-  ],
-  "ekycVerified": true,
-  "avatar": "images/uploads/companion-8.jpg",
-  "cover": "images/uploads/companion-8-cover.jpg",
   "gallery": [
-    "images/uploads/companion-8-1.jpg",
-    "images/uploads/companion-8-2.jpg",
-    "images/uploads/companion-8-3.jpg",
-    "images/uploads/companion-8-4.jpg",
-    "images/uploads/companion-8-5.jpg"
-  ]
+    "images/uploads/2aoboqp9vavx8ctqx78zctm6fyrql6knet2dks3e.jpg",
+    "images/uploads/1785648123952_2882336867311354951_g3327100699746381419_e85394e1a25a62a1a0e8f1dd24a5e7ce.jpg",
+    "images/uploads/1785648123997_2882336867311354951_g3327100699746381419_3954962cad0e7e8a064a5b73846cd51c.jpg"
+  ],
+  "edu": "Đại học",
+  "cover": "images/uploads/2.png",
+  "ekycVerified": true,
+  "weight": "72kg",
+  "avatar": "images/uploads/1.png",
+  "bookings": 150,
+  "reviews": 76,
+  "id": 8,
+  "rating": 4.7,
+  "job": "Nhân viên IT",
+  "birth": "19/10/1998",
+  "age": 27
 }
