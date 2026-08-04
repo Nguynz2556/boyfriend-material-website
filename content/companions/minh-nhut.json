@@ -1,18 +1,17 @@
 {
-  "id": 3,
-  "slug": "minh-nhut",
-  "name": "Minh Nhựt",
-  "age": 25,
   "loc": "Đà Nẵng",
-  "price": 560000,
-  "rating": 5.0,
-  "reviews": 156,
-  "bookings": 301,
   "height": "1m76",
-  "weight": "68kg",
-  "job": "Nhân viên ngân hàng",
-  "activity": "Sự kiện",
   "bio": "Mình là Nhựt, thích tham gia các sự kiện, tiệc tùng và luôn biết cách tạo không khí vui vẻ. Với mình, mỗi buổi hẹn là một cơ hội để tạo nên kỷ niệm đáng nhớ cho người đồng hành.",
+  "price": 560000,
+  "name": "Minh Nhựt",
+  "slug": "minh-nhut",
+  "personality": [
+    "Năng động",
+    "Hài hước",
+    "Tinh tế",
+    "Chu đáo"
+  ],
+  "activity": "Sự kiện",
   "hobbies": [
     "Sự kiện",
     "Âm nhạc",
@@ -20,23 +19,22 @@
     "Ẩm thực",
     "Thời trang"
   ],
-  "birth": "20/02/1999",
   "hometown": "Huế",
-  "edu": "Đại học",
-  "personality": [
-    "Năng động",
-    "Hài hước",
-    "Tinh tế",
-    "Chu đáo"
-  ],
-  "ekycVerified": true,
-  "avatar": "images/uploads/companion-3.jpg",
-  "cover": "images/uploads/companion-3-cover.jpg",
   "gallery": [
-    "images/uploads/companion-3-1.jpg",
-    "images/uploads/companion-3-2.jpg",
-    "images/uploads/companion-3-3.jpg",
-    "images/uploads/companion-3-4.jpg",
-    "images/uploads/companion-3-5.jpg"
-  ]
+    "images/uploads/1785647912063_2882336867311354951_g3327100699746381419_9468c624406cbdfffd805bc97d6a40eb.jpg",
+    "images/uploads/1785647912115_2882336867311354951_g3327100699746381419_70e4bb913f20afd6614e8bd60db6b060.jpg",
+    "images/uploads/1785647912097_2882336867311354951_g3327100699746381419_8e03361d0fe6aba72b02a1263fae00f3.jpg"
+  ],
+  "edu": "Đại học",
+  "cover": "images/uploads/5.png",
+  "ekycVerified": true,
+  "weight": "68kg",
+  "avatar": "images/uploads/1785647912021_2882336867311354951_g3327100699746381419_faba3a414967781eb064666773b7732d.jpg",
+  "bookings": 301,
+  "reviews": 156,
+  "id": 3,
+  "rating": 5,
+  "job": "Nhân viên ngân hàng",
+  "birth": "20/02/1999",
+  "age": 25
 }
