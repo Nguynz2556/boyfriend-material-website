@@ -103,7 +103,7 @@ input,select,textarea{ font-family:inherit; }
   .nav-links.open{ display:flex; }
   .nav-links a{ width:100%; padding:12px 0; border-bottom:1px solid var(--line); }
   .nav-toggle{ display:block; }
-  .nav-cta .btn-outline{ display:none; }
+  .nav-cta [data-auth-guest].btn-outline{ display:none; }
 }
 
 /* ---------- Hero (home) ---------- */
@@ -468,3 +468,10 @@ input,select,textarea{ font-family:inherit; }
 .contract-paper{ font-size:.88rem; line-height:1.6; color:var(--ink); }
 .contract-paper h4{ margin-top:18px; margin-bottom:6px; font-size:.95rem; color:var(--navy); }
 .contract-paper p{ margin-bottom:8px; }
+
+/* =========================================================================
+   BỔ SUNG (đợt sửa lỗi 5): mobile — sửa nav ẩn nhầm nút, form-grid, video TVC
+   ========================================================================= */
+@media (max-width:560px){ .form-grid{ grid-template-columns:1fr; } }
+#tvc-container iframe, #tvc-container video{ width:100%; height:100%; display:block; }
+@media (max-width:920px){ .book-card{ position:static; } }

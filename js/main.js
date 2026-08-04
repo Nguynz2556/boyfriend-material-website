@@ -139,10 +139,6 @@ function wireFilterAndSort() {
     var sortVal = sort && sort.value || '';
     if (sortVal === 'rating-desc') {
       visible.sort(function (a, b) { return parseFloat(b.getAttribute('data-rating')) - parseFloat(a.getAttribute('data-rating')); });
-    } else if (sortVal === 'price-asc') {
-      visible.sort(function (a, b) { return parseInt(a.getAttribute('data-price')) - parseInt(b.getAttribute('data-price')); });
-    } else if (sortVal === 'price-desc') {
-      visible.sort(function (a, b) { return parseInt(b.getAttribute('data-price')) - parseInt(a.getAttribute('data-price')); });
     }
 
     cards.forEach(function (c) { c.style.display = 'none'; });
@@ -168,7 +164,7 @@ function wireFilterAndSort() {
         '<div class="person-photo"><div class="placeholder-photo"><div class="icon">🖼️</div>Ảnh: chưa có</div>' +
         '<span class="verified-tag">Mới thêm (admin)</span></div>' +
         '<div class="person-body"><div class="name-row"><h4>' + p.name + ', ' + p.age + '</h4><span class="stars">★ ' + p.rating + '</span></div>' +
-        '<p class="loc">' + p.loc + '</p><p class="price">' + Number(p.price).toLocaleString('vi-VN') + 'đ <span>/giờ</span></p></div>';
+        '<p class="loc">' + p.loc + '</p></div>';
       extraWrap.appendChild(a);
     });
   }

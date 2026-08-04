@@ -29,7 +29,12 @@ var CONTENT = (function () {
     });
   }
   function getSettings() { return fetchJSON('content/settings.json').catch(function () { return {}; }); }
-  function getPage(name) { return fetchJSON('content/pages/' + name + '.json').catch(function () { return null; }); }
+  function getPage(name) {
+    return fetchJSON('content/pages/' + name + '.json').catch(function (err) {
+      console.error('Không tải được content/pages/' + name + '.json:', err.message);
+      return null;
+    });
+  }
 
   return { getManifest: getManifest, getCompanion: getCompanion, getAllCompanions: getAllCompanions, getSettings: getSettings, getPage: getPage };
 })();
@@ -41,13 +46,40 @@ function priceFmt(n) { return Number(n).toLocaleString('vi-VN'); }
 // =========================================================================
 function companionCardHTML(p) {
   return (
-    '<a href="ho-so.html?id=' + p.slug + '" class="person-card" data-loc="' + p.loc + '" data-activity="' + p.activity + '" data-price="' + p.price + '" data-rating="' + p.rating + '">' +
+    '<a href="ho-so.html?id=' + p.slug + '" class="person-card" data-loc="' + p.loc + '" data-activity="' + p.activity + '" data-rating="' + p.rating + '">' +
     '<div class="person-photo">' +
     '<img src="' + p.avatar + '" alt="' + p.name + '" onerror="this.parentElement.innerHTML=\'<div class=&quot;placeholder-photo&quot;><div class=&quot;icon&quot;>🖼️</div>Chưa có ảnh</div>' + '\'">' +
     '<span class="verified-tag">✓ Đã xác minh</span></div>' +
     '<div class="person-body"><div class="name-row"><h4>' + p.name + ', ' + p.age + '</h4><span class="stars">★ ' + p.rating + '</span></div>' +
-    '<p class="loc">' + p.loc + '</p><p class="price">' + priceFmt(p.price) + 'đ <span>/giờ</span></p></div></a>'
+    '<p class="loc">' + p.loc + '</p></div></a>'
   );
+}
+
+function buildVideoEmbedHTML(url) {
+  if (!url) return '';
+  var yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{6,})/);
+  if (yt) {
+    return '<iframe src="https://www.youtube.com/embed/' + yt[1] + '" style="width:100%;height:100%;border:0;" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+  }
+  var vimeo = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeo) {
+    return '<iframe src="https://player.vimeo.com/video/' + vimeo[1] + '" style="width:100%;height:100%;border:0;" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+  }
+  // File video tải lên trực tiếp (mp4, webm...)
+  return '<video src="' + url + '" controls style="width:100%;height:100%;object-fit:cover;background:#000;"></video>';
+}
+
+function initTvcContent() {
+  var section = document.getElementById('tvc-section');
+  if (!section) return;
+  CONTENT.getSettings().then(function (s) {
+    if (!s || !s.tvc_video_url) return; // không có video -> giữ ẩn section
+    var titleEl = document.getElementById('tvc-title');
+    var container = document.getElementById('tvc-container');
+    if (titleEl && s.tvc_title) titleEl.textContent = s.tvc_title;
+    if (container) container.innerHTML = buildVideoEmbedHTML(s.tvc_video_url);
+    section.style.display = '';
+  });
 }
 
 // =========================================================================
@@ -102,7 +134,10 @@ function initProfileContent() {
     root.innerHTML = '<p style="padding:40px;text-align:center;">Không tìm thấy hồ sơ. <a href="danh-sach.html">Quay lại danh sách</a>.</p>';
     return;
   }
-  CONTENT.getCompanion(slug).then(function (p) {
+  Promise.all([CONTENT.getCompanion(slug), CONTENT.getPage('dich-vu')]).then(function (results) {
+    var p = results[0];
+    var servicesPage = results[1];
+    var services = servicesPage ? (servicesPage.services || []) : null;
     document.title = p.name + ' — Hồ sơ người đồng hành — Boyfriend Material';
     var firstName = p.name.split(' ').slice(-1)[0];
     var hobbiesHtml = (p.hobbies || []).map(function (h) { return '<span class="chip">' + h + '</span>'; }).join('');
@@ -112,6 +147,13 @@ function initProfileContent() {
     var galleryHtml = (p.gallery || []).map(function (g) {
       return '<div class="gallery-item"><img src="' + g + '" alt="' + p.name + '" onerror="this.parentElement.style.display=\'none\'"></div>';
     }).join('');
+    var serviceOptionsHtml = services === null
+      ? '<option data-price="">⚠️ Lỗi tải dữ liệu dịch vụ — xem HUONG-DAN.md</option>'
+      : (services.length
+          ? services.map(function (s) {
+              return '<option data-price="' + s.price + '">' + s.name + ' — ' + s.price + '</option>';
+            }).join('')
+          : '<option data-price="">(Chưa có dịch vụ nào — thêm ở mục "Trang Dịch vụ" trong admin)</option>');
 
     root.innerHTML =
       '<div class="profile-cover"><img src="' + p.cover + '" alt="Ảnh bìa" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" onerror="this.parentElement.innerHTML=\'<div class=&quot;placeholder-photo&quot;><div class=&quot;icon&quot;>🖼️</div>Chưa có ảnh bìa</div>' + '\'"></div>' +
@@ -132,7 +174,7 @@ function initProfileContent() {
         '</div>' +
         '<aside class="book-card">' +
           '<h3 style="font-size:1.1rem;">Đặt lịch với ' + firstName + '</h3>' +
-          '<p class="book-price">' + priceFmt(p.price) + 'đ <span>/giờ</span></p><hr>' +
+          '<p style="font-size:.85rem;color:var(--ink-soft);">Giá theo từng loại dịch vụ — xem chi tiết tại trang <a href="dich-vu.html">Dịch vụ</a>.</p><hr>' +
           '<div class="field"><label>Chọn ngày</label><input type="date"></div>' +
           '<div class="field"><label>Địa điểm gặp mặt</label><input type="text" id="book-location" placeholder="Ví dụ: Quán cafe ABC, Quận 1..."></div>' +
           '<div class="field"><label>Khung giờ (từ - đến)</label><div class="time-range-row">' +
@@ -140,11 +182,7 @@ function initProfileContent() {
             '<span>đến</span>' +
             '<select id="book-time-to"><option>08:00</option><option>10:00</option><option>12:00</option><option>14:00</option><option selected>16:00</option><option>18:00</option><option>20:00</option><option>22:00</option><option>00:00</option></select>' +
           '</div></div>' +
-          '<div class="field"><label>Chọn dịch vụ</label><select id="book-service">' +
-            '<option data-price="' + priceFmt(p.price) + 'đ">' + p.activity + ' — ' + priceFmt(p.price) + 'đ/giờ</option>' +
-            '<option data-price="' + priceFmt(Math.round(p.price * 4)) + 'đ">Du lịch (theo ngày) — ' + priceFmt(Math.round(p.price * 4)) + 'đ/ngày</option>' +
-            '<option data-price="' + priceFmt(Math.round(p.price * 1.3)) + 'đ">Sự kiện — ' + priceFmt(Math.round(p.price * 1.3)) + 'đ/sự kiện</option>' +
-          '</select></div>' +
+          '<div class="field"><label>Chọn dịch vụ</label><select id="book-service">' + serviceOptionsHtml + '</select></div>' +
           '<a href="#" class="btn btn-primary btn-block">Đặt lịch ngay</a>' +
           '<a href="#" class="btn btn-outline btn-block" style="margin-top:10px;">Nhắn tin trước khi đặt lịch</a>' +
         '</aside>' +
@@ -183,16 +221,28 @@ function pkgCardHTML(pkg) {
     '<ul class="pkg-feats">' + feats + '</ul>' +
     '<a href="danh-sach.html" class="btn ' + btnClass + ' btn-block">Chọn gói</a></div>';
 }
+function serviceCardHTML(s) {
+  return '<div class="service-card"><div class="service-icon">' + s.icon + '</div><h4>' + s.name + '</h4>' +
+    '<p class="desc">' + s.desc + '</p><p class="price">Từ ' + s.price + '</p>' +
+    '<a href="danh-sach.html" class="btn btn-outline btn-sm btn-block">Đặt ngay</a></div>';
+}
 function initServicesContent() {
   var hourlyGrid = document.getElementById('pkg-hourly');
   var dailyGrid = document.getElementById('pkg-daily');
-  if (!hourlyGrid && !dailyGrid) return;
+  var servicesGrid = document.getElementById('services-grid');
+  if (!hourlyGrid && !dailyGrid && !servicesGrid) return;
   CONTENT.getPage('dich-vu').then(function (p) {
-    if (!p) return;
+    if (!p) {
+      var errMsg = '<p style="grid-column:1/-1;color:#b42318;padding:20px;text-align:center;">Không tải được dữ liệu dịch vụ (content/pages/dich-vu.json). Kiểm tra file này đã có trên GitHub/Netlify chưa — xem HUONG-DAN.md mục "Khắc phục sự cố".</p>';
+      if (servicesGrid) servicesGrid.innerHTML = errMsg;
+      if (hourlyGrid) hourlyGrid.innerHTML = errMsg;
+      return;
+    }
     var titleEl = document.getElementById('dv-title');
     var descEl = document.getElementById('dv-desc');
     if (titleEl && p.intro_title) titleEl.textContent = p.intro_title;
     if (descEl && p.intro_desc) descEl.textContent = p.intro_desc;
+    if (servicesGrid && p.services) servicesGrid.innerHTML = p.services.map(serviceCardHTML).join('');
     if (hourlyGrid && p.packages_hourly) hourlyGrid.innerHTML = p.packages_hourly.map(pkgCardHTML).join('');
     if (dailyGrid && p.packages_daily) dailyGrid.innerHTML = p.packages_daily.map(pkgCardHTML).join('');
   });
@@ -249,6 +299,7 @@ function initContactInfoContent() {
 document.addEventListener('DOMContentLoaded', function () {
   initGlobalBranding();
   initHomeContent();
+  initTvcContent();
   initDanhSachContent();
   initProfileContent();
   initContactInfoContent();

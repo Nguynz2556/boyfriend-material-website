@@ -98,6 +98,12 @@ collections:
           - { label: "Tiêu đề trang chủ - dòng 1", name: "hero_title_line1", widget: "string" }
           - { label: "Tiêu đề trang chủ - chữ nhấn (màu vàng)", name: "hero_title_accent", widget: "string" }
           - { label: "Mô tả ngắn trang chủ", name: "hero_desc", widget: "text" }
+          - { label: "Tiêu đề khu vực Video giới thiệu (TVC)", name: "tvc_title", widget: "string" }
+          - label: "Video TVC — dán link YouTube/Vimeo, HOẶC dán đường dẫn file video đã tải lên mục Media"
+            name: "tvc_video_url"
+            widget: "string"
+            required: false
+            hint: "Dán link dạng https://www.youtube.com/watch?v=... hoặc https://vimeo.com/... Nếu muốn tải file video lên trực tiếp, vào tab Media ở trên cùng để tải lên trước, sau đó copy đường dẫn file dán vào đây. Để trống thì khu vực video sẽ tự ẩn trên trang chủ."
           - { label: "Tiêu đề trang Liên hệ", name: "contact_intro_title", widget: "string" }
           - { label: "Mô tả trang Liên hệ", name: "contact_intro_desc", widget: "string" }
           - { label: "Số hotline", name: "contact_hotline", widget: "string" }
@@ -108,10 +114,14 @@ collections:
           - { label: "Link Instagram", name: "instagram_url", widget: "string" }
           - { label: "Link YouTube", name: "youtube_url", widget: "string" }
           - { label: "Tên pháp lý công ty (dùng trong hợp đồng)", name: "company_legal_name", widget: "string" }
+          - { label: "Mã số thuế (dùng trong hợp đồng)", name: "company_tax_code", widget: "string", required: false }
           - { label: "Địa chỉ công ty (dùng trong hợp đồng)", name: "company_address", widget: "string" }
           - { label: "SĐT công ty (dùng trong hợp đồng)", name: "company_phone", widget: "string" }
           - { label: "Email công ty (dùng trong hợp đồng)", name: "company_email", widget: "string" }
           - { label: "Người đại diện (dùng trong hợp đồng)", name: "company_representative", widget: "string" }
+          - { label: "Chức vụ người đại diện", name: "company_position", widget: "string", required: false }
+          - { label: "Số tài khoản ngân hàng (dùng trong hợp đồng)", name: "company_bank_account", widget: "string", required: false }
+          - { label: "Tên ngân hàng", name: "company_bank_name", widget: "string", required: false }
 
   # ---------------------------------------------------------------------
   # 4. TRANG DỊCH VỤ — sửa gói theo giờ / theo ngày

@@ -3,6 +3,8 @@
   "hero_title_line1": "Bạn không cần một người yêu.",
   "hero_title_accent": "một người đồng hành phù hợp.",
   "hero_desc": "Nền tảng kết nối bạn với những người đồng hành đáng tin cậy cho mọi khoảnh khắc trong cuộc sống — đi ăn, đi chơi, sự kiện hay chỉ đơn giản là một cuộc trò chuyện.",
+  "tvc_title": "Video giới thiệu Boyfriend Material",
+  "tvc_video_url": "",
   "contact_intro_title": "Liên hệ với chúng tôi",
   "contact_intro_desc": "Đội ngũ của chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn.",
   "contact_hotline": "0987 918 545",
@@ -13,8 +15,12 @@
   "instagram_url": "https://instagram.com/",
   "youtube_url": "https://youtube.com/",
   "company_legal_name": "Boy-friend Material",
+  "company_tax_code": "",
   "company_address": "107/43/10/9/3 Đường số 38, Hiệp Bình, TP. Thủ Đức",
   "company_phone": "0987918545",
   "company_email": "bfm6868@gmail.com",
-  "company_representative": "Huỳnh Văn Danh"
+  "company_representative": "Huỳnh Văn Danh",
+  "company_position": "Giám đốc",
+  "company_bank_account": "",
+  "company_bank_name": ""
 }

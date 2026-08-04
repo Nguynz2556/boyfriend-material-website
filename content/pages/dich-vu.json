@@ -1,6 +1,20 @@
 {
   "intro_title": "Dịch vụ của chúng tôi",
-  "intro_desc": "Chọn gói phù hợp với nhu cầu của bạn — theo giờ hoặc theo ngày.",
+  "intro_desc": "Đa dạng các loại hình đồng hành đáp ứng mọi nhu cầu của bạn.",
+  "services": [
+    { "icon": "☕", "name": "Đi ăn / Cafe", "desc": "Cùng bạn khám phá quán ăn, quán cafe thú vị trong thành phố.", "price": "300.000đ/giờ" },
+    { "icon": "✈️", "name": "Du lịch", "desc": "Đồng hành cùng bạn trong những chuyến đi ngắn ngày hoặc dài ngày.", "price": "700.000đ/ngày" },
+    { "icon": "🎉", "name": "Sự kiện", "desc": "Đồng hành tham gia đám cưới, tiệc, sự kiện gia đình hoặc công việc.", "price": "600.000đ/sự kiện" },
+    { "icon": "🛍️", "name": "Mua sắm", "desc": "Trợ lý tin cậy đi mua sắm cùng bạn, tư vấn lựa chọn phù hợp.", "price": "400.000đ/giờ" },
+    { "icon": "🎬", "name": "Xem phim", "desc": "Cùng bạn xem phim rạp hoặc tại nhà, chia sẻ những giây phút thư giãn.", "price": "300.000đ/giờ" },
+    { "icon": "🎮", "name": "Chơi game", "desc": "Cùng chơi game bạn thích, từ board game đến game online.", "price": "400.000đ/giờ" },
+    { "icon": "🎭", "name": "Thể thao / Concert", "desc": "Cùng bạn tham dự các buổi hoà nhạc, sự kiện thể thao yêu thích.", "price": "600.000đ/buổi" },
+    { "icon": "📚", "name": "Học tập", "desc": "Đồng hành hỗ trợ học tập, trao đổi kiến thức và luyện tập ngôn ngữ.", "price": "300.000đ/giờ" },
+    { "icon": "💬", "name": "Trò chuyện online", "desc": "Trò chuyện, lắng nghe qua điện thoại hoặc video call mọi lúc.", "price": "200.000đ/giờ" },
+    { "icon": "🧘", "name": "Tâm sự", "desc": "Lắng nghe, chia sẻ và đồng hành cùng bạn vượt qua khó khăn.", "price": "300.000đ/giờ" },
+    { "icon": "👔", "name": "Trợ lý cá nhân", "desc": "Hỗ trợ các công việc cá nhân, sắp xếp lịch trình hằng ngày.", "price": "500.000đ/giờ" },
+    { "icon": "🏋️", "name": "Gym / Tập luyện cùng", "desc": "Cùng bạn tập luyện, giữ động lực cho lối sống lành mạnh.", "price": "350.000đ/giờ" }
+  ],
   "packages_hourly": [
     { "name": "Gói 1 giờ", "price": "500.000đ", "featured": false, "features": ["1 giờ đồng hành", "Chọn địa điểm", "Hỗ trợ 24/7"] },
     { "name": "Gói 2 giờ", "price": "900.000đ", "featured": false, "features": ["2 giờ đồng hành", "Chọn địa điểm", "Hỗ trợ 24/7", "Đánh giá minh bạch"] },

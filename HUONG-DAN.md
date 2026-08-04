@@ -256,6 +256,23 @@ Trang chủ có thêm khu vực video ngay dưới phần hero — **tự ẩn n
 
 ⚠️ Lưu ý: tải video trực tiếp lên GitHub (qua tab Media) chỉ nên dùng cho video **dung lượng nhỏ** (dưới vài chục MB) — GitHub không phù hợp lưu video lớn/nhiều video. Nếu video dài hoặc chất lượng cao, nên tải lên YouTube (ở chế độ Unlisted nếu không muốn công khai trên kênh YouTube) rồi dán link vào đây — vừa nhẹ vừa phát mượt hơn.
 
+## 19. Khắc phục sự cố — "Tab Dịch vụ / dịch vụ trong hồ sơ không hiển thị"
+
+Nguyên nhân hay gặp nhất: thư mục `content/pages/` (chứa `dich-vu.json`, `ve-chung-toi.json`) **chưa được đồng bộ đầy đủ lên GitHub** — đây là thư mục MỚI thêm vào ở bản cập nhật gần đây, nên nếu bạn từng tự tải code lên GitHub theo kiểu chọn từng file lẻ (thay vì kéo-thả nguyên thư mục), rất dễ bị sót.
+
+**Cách kiểm tra nhanh:**
+1. Vào GitHub repo → mở thư mục `content/` → phải thấy đủ 3 mục: `companions/`, `pages/`, và file `manifest.json`, `settings.json`.
+2. Mở tiếp `content/pages/` → phải thấy đủ 2 file: `dich-vu.json` và `ve-chung-toi.json`.
+3. Nếu thiếu → vào lại file zip mình gửi, kéo-thả bổ sung đúng các file/thư mục còn thiếu vào GitHub (Add file → Upload files).
+
+**Từ bản cập nhật này, nếu vẫn thiếu file, trang sẽ tự hiện dòng chữ đỏ báo rõ** (ví dụ "Không tải được dữ liệu dịch vụ...") thay vì đứng im không rõ lý do như trước — giúp bạn tự biết ngay cần bổ sung file gì.
+
+**Mẹo an toàn nhất khi cập nhật code sau này:** luôn xoá hết code cũ trên GitHub rồi tải lại TOÀN BỘ nội dung file zip mới nhất, thay vì chỉ tải các file bạn nghĩ là "có thay đổi" — tránh sót file như trên.
+
+## 20. Đã sửa: nút "Tin nhắn" / "Đơn hàng" bị ẩn mất trên điện thoại
+Lỗi CSS: quy tắc ẩn bớt nút trên màn hình nhỏ (để đỡ chật menu) trước đây áp dụng nhầm cho MỌI nút viền (kể cả "Tin nhắn", "Đơn hàng"), thay vì chỉ áp dụng cho nút "Đăng nhập" như dự định ban đầu. Đã sửa lại đúng phạm vi — giờ trên điện thoại, sau khi đăng nhập sẽ thấy đủ "Tin nhắn" và "Đơn hàng" trong menu.
+
+## Form liên hệ / đăng ký nhận tin (Formspree)
 Đăng ký miễn phí tại formspree.io, tạo form, thay `YOUR_FORM_ID` trong các file `.html` bằng ID thật.
 
 ## SEO cơ bản đã thêm

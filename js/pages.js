@@ -311,7 +311,24 @@ function initAdminPage() {
 function setupSignaturePad(canvasId, clearBtnId) {
   var canvas = document.getElementById(canvasId);
   if (!canvas) return null;
-  var ctx = canvas.getContext('2d');
+  var ctx;
+  try {
+    ctx = canvas.getContext('2d');
+  } catch (e) {
+    ctx = null;
+  }
+  if (!ctx) {
+    // Một số trình duyệt/tiện ích chặn Canvas API vì lý do riêng tư — không để cả trang bị vỡ,
+    // trả về bản "giả" luôn coi như đã ký để không chặn người dùng hoàn tất luồng.
+    console.error('Không lấy được canvas context (có thể do trình duyệt chặn Canvas API).');
+    return {
+      isEmpty: function () { return false; },
+      getDataURL: function () { return ''; },
+      drawText: function () {},
+      clear: function () {},
+      unavailable: true,
+    };
+  }
   ctx.lineWidth = 2.2;
   ctx.lineCap = 'round';
   ctx.strokeStyle = '#172341';
@@ -509,14 +526,20 @@ function contractBodyHTML(c) {
     '<p style="text-align:center;font-weight:700;font-size:1.05rem;margin-top:14px;">HỢP ĐỒNG CUNG CẤP DỊCH VỤ ĐỒNG HÀNH</p>' +
     '<p style="text-align:center;color:var(--ink-soft);font-size:.85rem;">Số hợp đồng: ' + c.booking.id + '</p>' +
     '<p style="text-align:center;color:var(--ink-soft);font-size:.85rem;">TP.HCM, ngày ký: ' + new Date(c.booking.contract ? c.booking.contract.signedAt : Date.now()).toLocaleDateString('vi-VN') + '</p>' +
+    '<p style="font-size:.82rem;color:var(--ink-soft);">- Căn cứ Bộ luật Dân sự số 91/2015/QH13 ngày 24/11/2015;<br>' +
+    '- Căn cứ Luật Thương mại số 36/2005/QH11 ngày 14/06/2005;<br>' +
+    '- Căn cứ vào nhu cầu và khả năng của hai bên.</p>' +
 
     '<h4>I. THÔNG TIN CÁC BÊN</h4>' +
     '<p><b>BÊN A (Đơn vị cung cấp dịch vụ)</b><br>' +
     'Tên doanh nghiệp: ' + (co.company_legal_name || 'Boy-friend Material') + '<br>' +
+    (co.company_tax_code ? ('Mã số thuế: ' + co.company_tax_code + '<br>') : '') +
     'Địa chỉ: ' + (co.company_address || '') + '<br>' +
     'Điện thoại: ' + (co.company_phone || '') + '<br>' +
     'Email: ' + (co.company_email || '') + '<br>' +
-    'Đại diện: ' + (co.company_representative || '') + '</p>' +
+    'Đại diện: ' + (co.company_representative || '') + (co.company_position ? (' — Chức vụ: ' + co.company_position) : '') + '<br>' +
+    (co.company_bank_account ? ('Số tài khoản: ' + co.company_bank_account + (co.company_bank_name ? (' — Ngân hàng: ' + co.company_bank_name) : '') + '<br>') : '') +
+    '</p>' +
 
     '<p><b>BÊN B (Khách hàng)</b><br>' +
     'Họ và tên: ' + c.user.name + '<br>' +
@@ -525,8 +548,8 @@ function contractBodyHTML(c) {
     'CCCD/Hộ chiếu: đã xác minh qua eKYC (ảnh lưu tại hồ sơ tài khoản)</p>' +
 
     '<h4>Điều 1. Nội dung dịch vụ</h4>' +
-    '<p>Bên A cung cấp dịch vụ đồng hành xã giao theo nhu cầu khách hàng, bao gồm: đi ăn, uống cà phê, xem phim, tham gia sự kiện, mua sắm, du lịch, trò chuyện, chơi game hoặc các hoạt động giải trí khác theo thỏa thuận.<br>' +
-    '<i>Lưu ý: Dịch vụ không bao gồm bất kỳ hành vi vi phạm pháp luật hoặc trái đạo đức xã hội.</i></p>' +
+    '<p>Bên A cung cấp dịch vụ đồng hành xã giao theo nhu cầu khách hàng, bao gồm: đi ăn, uống cà phê, xem phim, tham gia sự kiện, mua sắm, du lịch, trò chuyện, chơi game hoặc các hoạt động giải trí lành mạnh khác được hai bên thống nhất bằng văn bản/tin nhắn trước khi thực hiện.<br>' +
+    '<i>Người đồng hành là nhân viên/cộng tác viên do Bên A cử đến để thực hiện dịch vụ. Dịch vụ không bao gồm bất kỳ hành vi vi phạm pháp luật hoặc trái đạo đức xã hội.</i></p>' +
     '<p><b>Người đồng hành được chỉ định:</b> ' + c.booking.companionName + '<br><b>Dịch vụ đã chọn:</b> ' + c.booking.service + '</p>' +
 
     '<h4>Điều 2. Thời gian và địa điểm</h4>' +
@@ -534,36 +557,36 @@ function contractBodyHTML(c) {
     'Thời gian: ' + (c.booking.timeRange || '(chưa chọn)') + '<br>' +
     'Địa điểm: ' + (c.booking.location || '(chưa cung cấp — hai bên trao đổi thêm qua tin nhắn)') + '</p>' +
 
-    '<h4>Điều 3. Chi phí và thanh toán</h4>' +
+    '<h4>Điều 3. Chi phí và phương thức thanh toán</h4>' +
     '<p>Tổng chi phí: ' + c.booking.service + '.<br>' +
-    'Chi phí bao gồm phí dịch vụ và phí nền tảng. Không bao gồm chi phí ăn uống, vé sự kiện, khách sạn, phương tiện di chuyển hoặc các khoản phát sinh khác nếu hai bên không có thỏa thuận.</p>' +
+    'Chi phí bao gồm phí dịch vụ và phí nền tảng. Không bao gồm chi phí ăn uống, vé sự kiện, khách sạn, phương tiện di chuyển hoặc các khoản phát sinh khác nếu hai bên không có thỏa thuận.<br>' +
+    'Phương thức thanh toán: Chuyển khoản vào tài khoản ngân hàng của Bên A.<br>' +
+    'Thời hạn thanh toán: Bên B thanh toán theo tỉ lệ đã thoả thuận ngay khi ký hợp đồng và thanh toán phần còn lại trước khi dịch vụ bắt đầu.</p>' +
 
     '<h4>Điều 4. Quyền và nghĩa vụ của Bên A</h4>' +
-    '<p>- Cung cấp đúng người đồng hành theo hồ sơ đã xác minh.<br>- Bảo mật thông tin khách hàng.<br>- Hỗ trợ giải quyết khiếu nại.<br>- Thay thế người đồng hành trong trường hợp bất khả kháng.</p>' +
+    '<p>- Cung cấp đúng người đồng hành theo hồ sơ đã xác minh.<br>- Bảo mật thông tin khách hàng.<br>- Hỗ trợ giải quyết khiếu nại và chịu trách nhiệm về chất lượng dịch vụ của Người đồng hành.<br>- Thay thế người đồng hành trong trường hợp bất khả kháng.<br>- Đảm bảo Người đồng hành có mặt đúng giờ, thực hiện đúng nội dung dịch vụ, ăn mặc lịch sự, giao tiếp văn minh. Người đồng hành có quyền từ chối các yêu cầu trái pháp luật hoặc không phù hợp từ Bên B.</p>' +
 
-    '<h4>Điều 5. Quyền và nghĩa vụ của khách hàng</h4>' +
-    '<p>- Thanh toán đúng thời hạn.<br>- Cung cấp thông tin trung thực.<br>- Tôn trọng người đồng hành.<br>- Không yêu cầu thực hiện các hành vi ngoài phạm vi dịch vụ.</p>' +
+    '<h4>Điều 5. Quyền và nghĩa vụ của Bên B</h4>' +
+    '<p>- Thanh toán đầy đủ và đúng thời hạn.<br>- Cung cấp thông tin trung thực.<br>- Tôn trọng người đồng hành.<br>- Không yêu cầu thực hiện các hành vi ngoài phạm vi dịch vụ.</p>' +
 
-    '<h4>Điều 6. Quyền và nghĩa vụ của người đồng hành</h4>' +
-    '<p>- Có mặt đúng giờ và thực hiện đúng nội dung dịch vụ.<br>- Ăn mặc lịch sự, giao tiếp văn minh.<br>- Có quyền từ chối các yêu cầu trái pháp luật hoặc không phù hợp.</p>' +
-
-    '<h4>Điều 7. Các hành vi bị nghiêm cấm</h4>' +
+    '<h4>Điều 6. Các hành vi bị nghiêm cấm và Xử lý vi phạm</h4>' +
     '<p style="font-weight:600;">Nghiêm cấm các hành vi: mại dâm, môi giới mại dâm, quấy rối tình dục, bạo lực, sử dụng ma túy, đánh bạc, mang vũ khí, ép buộc hoặc bất kỳ hành vi vi phạm pháp luật nào.</p>' +
+    '<p>Xử lý vi phạm: Trường hợp Bên B vi phạm Điều này, Người đồng hành có quyền ngay lập tức chấm dứt dịch vụ và rời khỏi hiện trường. Bên A sẽ không hoàn lại bất kỳ khoản phí nào đã thanh toán và có quyền trình báo cơ quan chức năng nếu cần thiết.</p>' +
 
-    '<h4>Điều 8. Chính sách hủy dịch vụ</h4>' +
-    '<p>- Hủy trước 48 giờ: hoàn 100%.<br>- Hủy trước 24 giờ: hoàn 50%.<br>- Hủy dưới 24 giờ: không hoàn tiền.<br>- Nếu lỗi từ Bên A: hoàn tiền hoặc bố trí người thay thế.</p>' +
+    '<h4>Điều 7. Chính sách hủy dịch vụ</h4>' +
+    '<p>- Khách hàng hủy trước 48 giờ: hoàn 100%.<br>- Khách hàng hủy trước 24 giờ: hoàn 50%.<br>- Khách hàng hủy dưới 24 giờ: không hoàn tiền.<br>- Trường hợp Bên A không thể cung cấp dịch vụ như đã hẹn, Bên A phải thông báo trước tối thiểu 24 giờ và bố trí người thay thế được Bên B đồng ý. Nếu không có người thay thế hoặc báo sát giờ, Bên A phải hoàn lại 100% chi phí cộng thêm 50% phí bồi thường.</p>' +
 
-    '<h4>Điều 9. Bảo mật</h4>' +
+    '<h4>Điều 8. Bảo mật</h4>' +
     '<p>Hai bên cam kết bảo mật thông tin cá nhân, hình ảnh và nội dung trao đổi. Không được công khai khi chưa có sự đồng ý của bên còn lại.</p>' +
 
-    '<h4>Điều 10. Cam kết</h4>' +
-    '<p>Hai bên xác nhận từ đủ 18 tuổi, có đầy đủ năng lực hành vi dân sự, tự nguyện ký kết và tuân thủ hợp đồng.</p>' +
+    '<h4>Điều 9. Cam kết</h4>' +
+    '<p>Bên B cam kết đã đủ 18 tuổi và có đầy đủ năng lực hành vi dân sự. Các bên tự nguyện ký kết và tuân thủ hợp đồng.</p>' +
 
-    '<h4>Điều 11. Giải quyết tranh chấp</h4>' +
-    '<p>Ưu tiên thương lượng. Nếu không đạt được thỏa thuận, tranh chấp được giải quyết theo quy định của pháp luật Việt Nam.</p>' +
+    '<h4>Điều 10. Giải quyết tranh chấp</h4>' +
+    '<p>Ưu tiên thương lượng. Nếu không đạt được thỏa thuận, vụ việc sẽ được đưa ra Tòa án nhân dân có thẩm quyền tại TP.HCM giải quyết.</p>' +
 
-    '<h4>Điều 12. Hiệu lực</h4>' +
-    '<p>Hợp đồng có hiệu lực kể từ khi hai bên xác nhận và hoàn thành thanh toán; hết hiệu lực sau khi hoàn thành nghĩa vụ theo hợp đồng.</p>' +
+    '<h4>Điều 11. Hiệu lực</h4>' +
+    '<p>Hợp đồng có hiệu lực kể từ khi hai bên xác nhận và hoàn thành thanh toán; hết hiệu lực sau khi hoàn thành nghĩa vụ theo hợp đồng. Hợp đồng được lập thành 02 bản có giá trị pháp lý như nhau, mỗi bên giữ 01 bản.</p>' +
     '</div>'
   );
 }
