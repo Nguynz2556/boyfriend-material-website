@@ -231,7 +231,31 @@ Decap CMS không tự lưu trữ dữ liệu — nó lưu thẳng vào **kho mã
 
 Vào Google Maps → tìm địa chỉ thật → "Chia sẻ" → "Nhúng bản đồ" → copy link trong `src="..."` dán vào `<iframe>` trong `lien-he.html`.
 
-## Form liên hệ / đăng ký nhận tin (Formspree)
+## 18. Đợt sửa lỗi & bổ sung gần nhất
+
+### Đã sửa: lỗi vào `/admin`
+Nguyên nhân là file `admin.html` (bản demo cũ, dùng localStorage) vẫn còn tồn tại song song với `admin/index.html` (Decap CMS thật). Vì URL `/admin` không có đuôi file, hosting tự ưu tiên tìm `admin.html` trước — nên luôn vào nhầm bản demo cũ. **Đã xoá hẳn `admin.html`** — giờ `/admin` sẽ luôn vào đúng Decap CMS.
+
+⚠️ **Tác dụng phụ cần biết:** file `admin.html` cũ có tính năng "Đơn đăng ký làm người đồng hành (chờ duyệt)" — tính năng này gắn liền với bản demo cũ (dữ liệu localStorage) và **hiện không còn nơi để duyệt đơn nữa** sau khi xoá file. Nếu có người đăng ký với vai trò "Người đồng hành", đơn của họ vẫn được lưu nhưng bạn tạm thời chưa xem/duyệt được qua giao diện — mình sẽ cần thiết kế lại tính năng này để tương thích với Decap CMS ở lần sau nếu bạn cần dùng tới.
+
+### Đã sửa: lỗi "không gửi được hợp đồng"
+Tìm ra nguyên nhân thật: khi trình duyệt (hoặc tiện ích mở rộng) chặn Canvas API vì lý do riêng tư, hàm vẽ chữ ký bị lỗi ngầm, làm toàn bộ nút "Ký hợp đồng" không hoạt động mà không hiện thông báo gì. Đã thêm cơ chế dự phòng: nếu không vẽ được chữ ký, hệ thống vẫn cho phép hoàn tất (không chặn người dùng).
+
+### Đã cập nhật: nội dung hợp đồng bản đầy đủ (v2)
+Dùng đúng nội dung từ file `hợp_đồng_ver2.docx` bạn gửi — đủ 11 điều, có mã số thuế, chức vụ người đại diện, số tài khoản ngân hàng, điều khoản xử lý vi phạm chi tiết, chính sách huỷ dịch vụ đầy đủ, thẩm quyền giải quyết tranh chấp tại Toà án TP.HCM. Các trường công ty (mã số thuế, số tài khoản...) sửa được trong `/admin` → **Thông tin chung**.
+
+### Đã sửa: giá chỉ hiện ở trang Dịch vụ + thêm dịch vụ
+- Bỏ hiển thị giá riêng trên từng thẻ/hồ sơ người đồng hành.
+- 12 dịch vụ (trước đó có sẵn ở trang Dịch vụ nhưng chưa dùng cho form đặt lịch) giờ là **nguồn giá duy nhất**, dùng chung cho cả trang Dịch vụ và form đặt lịch của **mọi** người đồng hành — sửa giá 1 chỗ trong `/admin` → **Trang Dịch vụ** → mục "12 dịch vụ", áp dụng cho tất cả.
+- Muốn thêm dịch vụ thứ 13, 14... chỉ cần bấm "Add" trong danh sách dịch vụ ở admin, không cần code.
+
+### Mới: Video TVC ở trang chủ
+Trang chủ có thêm khu vực video ngay dưới phần hero — **tự ẩn nếu chưa có video**, tự hiện khi đã thêm. Sửa trong `/admin` → **Thông tin chung** → mục "Video TVC":
+- Cách dễ nhất: dán link YouTube hoặc Vimeo (ví dụ `https://www.youtube.com/watch?v=...`).
+- Muốn tải file video lên trực tiếp: vào tab **Media** ở đầu trang `/admin`, tải file `.mp4` lên trước, copy đường dẫn file đó rồi dán vào ô "Video TVC".
+
+⚠️ Lưu ý: tải video trực tiếp lên GitHub (qua tab Media) chỉ nên dùng cho video **dung lượng nhỏ** (dưới vài chục MB) — GitHub không phù hợp lưu video lớn/nhiều video. Nếu video dài hoặc chất lượng cao, nên tải lên YouTube (ở chế độ Unlisted nếu không muốn công khai trên kênh YouTube) rồi dán link vào đây — vừa nhẹ vừa phát mượt hơn.
+
 Đăng ký miễn phí tại formspree.io, tạo form, thay `YOUR_FORM_ID` trong các file `.html` bằng ID thật.
 
 ## SEO cơ bản đã thêm
