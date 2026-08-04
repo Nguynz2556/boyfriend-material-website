@@ -1,7 +1,7 @@
 {
   "loc": "TP. Hồ Chí Minh",
-  "height": "1m82",
-  "bio": "Mình là Hoàng, một người trầm tính nhưng dễ gần. Mình thích những buổi xem phim thư giãn, trò chuyện nhẹ nhàng và đơn giản là ở bên cạnh, lắng nghe bạn chia sẻ.",
+  "height": "1m70",
+  "bio": "Nếu bạn cần một người để chia sẻ, mình có sự thấu hiểu. Nếu bạn cần những tràng cười, mình có thừa sự hài hước. Mình yêu thích thể thao, đam mê rong ruổi du lịch và lưu giữ thanh xuân qua những thước phim, khung ảnh. Đặc biệt, với tư cách là một \"foodboy\" chính hiệu, mình tự tin có thể dẫn bạn đi thưởng thức mọi món ngon trên đời. Thế giới ngoài kia ồn ào, hay là mình cùng nhau tạo ra những kỷ niệm thật vui vẻ và đáng nhớ nhé?",
   "price": 600000,
   "name": "Huy Hoàng",
   "slug": "huy-hoang",
@@ -19,22 +19,22 @@
     "Sách",
     "Nhạc indie"
   ],
-  "hometown": "Cần Thơ",
+  "hometown": "Bình Định",
   "gallery": [
     "images/uploads/1785647903912_2882336867311354951_g3327100699746381419_828252a8152c5d88d20ce26548b2d0e4.jpg",
     "images/uploads/8.png",
     "images/uploads/1785647957042_2882336867311354951_g3327100699746381419_46931a139e265cbdfc3c47116265aa96.jpg"
   ],
-  "edu": "Cao đẳng",
+  "edu": "Đại học",
   "cover": "images/uploads/4.png",
   "ekycVerified": true,
-  "weight": "76kg",
+  "weight": "68kg",
   "avatar": "images/uploads/8.png",
   "bookings": 260,
   "reviews": 121,
   "id": 4,
   "rating": 4.7,
-  "job": "Freelancer thiết kế",
-  "birth": "08/09/1997",
-  "age": 28
+  "job": "Sinh viên",
+  "birth": "08/09/2004",
+  "age": 25
 }
