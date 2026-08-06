@@ -26,16 +26,16 @@
     "images/uploads/1wupukh9v7mpracfzhr1wyfgbfybawsqs6mwsoxabb30xm8q3b8amnavhctnuuvpka1.jpg"
   ],
   "edu": "Đại học",
-  "cover": "images/uploads/9.png",
+  "cover": "/images/uploads/anh-phuc/anh-phuc-bia.png",
   "ekycVerified": true,
   "weight": "75kg",
   "avatar": "images/uploads/1wupukh9v5dm9kyzzd58dzcs8zfuvmptrvpeopafzh6b9trftvsce4039mxbxbra306.jpg",
+  "services_offered": [],
   "bookings": 289,
   "reviews": 143,
   "id": 7,
   "rating": 4.9,
   "job": "Quản lý nhà hàng",
   "birth": "02/01/1996",
-  "age": 29,
-  "services_offered": []
+  "age": 29
 }
