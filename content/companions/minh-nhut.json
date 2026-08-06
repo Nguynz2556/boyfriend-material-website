@@ -26,16 +26,16 @@
     "images/uploads/1785647912097_2882336867311354951_g3327100699746381419_8e03361d0fe6aba72b02a1263fae00f3.jpg"
   ],
   "edu": "Đại học",
-  "cover": "images/uploads/1785647912063_2882336867311354951_g3327100699746381419_9468c624406cbdfffd805bc97d6a40eb.jpg",
+  "cover": "/images/uploads/minh-nhut/minh-nhut-bia.png",
   "ekycVerified": true,
   "weight": "68kg",
   "avatar": "images/uploads/1785647912021_2882336867311354951_g3327100699746381419_faba3a414967781eb064666773b7732d.jpg",
+  "services_offered": [],
   "bookings": 301,
   "reviews": 156,
   "id": 3,
   "rating": 5,
   "job": "Nhân viên ngân hàng",
   "birth": "20/02/1999",
-  "age": 25,
-  "services_offered": []
+  "age": 25
 }
