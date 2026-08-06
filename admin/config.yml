@@ -15,6 +15,14 @@ backend:
 media_folder: "images/uploads"
 public_folder: "images/uploads"
 
+# Tự động bỏ dấu tiếng Việt và ký tự đặc biệt khỏi TÊN FILE ảnh khi tải lên
+# (ví dụ "Thiết kế chưa có tên.png" -> "thiet-ke-chua-co-ten.png").
+# BẮT BUỘC giữ lại: Netlify từ chối triển khai nếu tên file có dấu hoặc ký tự lạ.
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
 # Bật xem trước bên phải màn hình khi soạn nội dung
 publish_mode: simple
 
