@@ -26,16 +26,16 @@
     "images/uploads/1785648123997_2882336867311354951_g3327100699746381419_3954962cad0e7e8a064a5b73846cd51c.jpg"
   ],
   "edu": "Đại học",
-  "cover": "images/uploads/2.png",
+  "cover": "/images/uploads/quoc-viet/quoc-viet-bia.png",
   "ekycVerified": true,
   "weight": "72kg",
   "avatar": "images/uploads/1.png",
+  "services_offered": [],
   "bookings": 150,
   "reviews": 76,
   "id": 8,
   "rating": 4.7,
   "job": "Nhân viên IT",
   "birth": "19/10/1998",
-  "age": 27,
-  "services_offered": []
+  "age": 27
 }
