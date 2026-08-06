@@ -102,6 +102,11 @@ function initHomeContent() {
     if (t1 && s.hero_title_line1) t1.textContent = s.hero_title_line1;
     if (ta && s.hero_title_accent) ta.textContent = s.hero_title_accent;
     if (d && s.hero_desc) d.textContent = s.hero_desc;
+
+    var heroPhotoWrap = document.getElementById('hero-photo-wrap');
+    if (heroPhotoWrap && s.hero_image) {
+      heroPhotoWrap.innerHTML = '<img src="' + s.hero_image + '" alt="Boyfriend Material" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
+    }
   });
 }
 
@@ -137,7 +142,12 @@ function initProfileContent() {
   Promise.all([CONTENT.getCompanion(slug), CONTENT.getPage('dich-vu')]).then(function (results) {
     var p = results[0];
     var servicesPage = results[1];
-    var services = servicesPage ? (servicesPage.services || []) : null;
+    var allServices = servicesPage ? (servicesPage.services || []) : null;
+    var services = allServices;
+    if (allServices && p.services_offered && p.services_offered.length > 0) {
+      services = allServices.filter(function (s) { return p.services_offered.indexOf(s.name) !== -1; });
+      if (services.length === 0) services = allServices; // phòng khi tên bị gõ sai chính tả, tránh dropdown trống hẳn
+    }
     document.title = p.name + ' — Hồ sơ người đồng hành — Boyfriend Material';
     var firstName = p.name.split(' ').slice(-1)[0];
     var hobbiesHtml = (p.hobbies || []).map(function (h) { return '<span class="chip">' + h + '</span>'; }).join('');
@@ -172,7 +182,7 @@ function initProfileContent() {
             '<dl><dt>Ngày sinh</dt><dd>' + p.birth + '</dd><dt>Quê quán</dt><dd>' + p.hometown + '</dd><dt>Nghề nghiệp</dt><dd>' + p.job + '</dd><dt>Học vấn</dt><dd>' + p.edu + '</dd><dt>Hút thuốc</dt><dd>Không</dd><dt>Uống rượu</dt><dd>Thỉnh thoảng</dd></dl>' +
             '<dl>' + persHtml + '</dl></div></div>' +
         '</div>' +
-        '<aside class="book-card">' +
+        '<aside class="book-card" data-full-name="' + p.name + '">' +
           '<h3 style="font-size:1.1rem;">Đặt lịch với ' + firstName + '</h3>' +
           '<p style="font-size:.85rem;color:var(--ink-soft);">Giá theo từng loại dịch vụ — xem chi tiết tại trang <a href="dich-vu.html">Dịch vụ</a>.</p><hr>' +
           '<div class="field"><label>Chọn ngày</label><input type="date"></div>' +

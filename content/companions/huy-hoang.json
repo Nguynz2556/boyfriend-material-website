@@ -36,5 +36,6 @@
   "rating": 4.7,
   "job": "Sinh viên",
   "birth": "08/09/2004",
-  "age": 25
+  "age": 25,
+  "services_offered": []
 }

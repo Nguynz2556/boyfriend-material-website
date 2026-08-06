@@ -112,17 +112,28 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // =========================================================================
-// Gửi dữ liệu về Google (Apps Script Web App) — xem HUONG-DAN.md để lấy URL
+// Gửi dữ liệu về Google (Apps Script Web App) — URL lấy từ /admin → Thông tin
+// chung → "Đường dẫn Apps Script (Google Sheet)" — không cần sửa code.
 // =========================================================================
+var _webhookUrlPromise = null;
+function getWebhookUrl() {
+  if (!_webhookUrlPromise) {
+    _webhookUrlPromise = (typeof CONTENT !== 'undefined')
+      ? CONTENT.getSettings().then(function (s) { return (s && s.google_webapp_url) ? s.google_webapp_url.trim() : ''; })
+      : Promise.resolve('');
+  }
+  return _webhookUrlPromise;
+}
 function sendToGoogleBackend(type, payload) {
-  var WEBAPP_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
-  if (WEBAPP_URL.indexOf('PASTE_YOUR') !== -1) return; // chưa cấu hình, bỏ qua im lặng
-  fetch(WEBAPP_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(Object.assign({ type: type }, payload)),
-  }).catch(function (err) { console.error('Không gửi được dữ liệu về Google:', err); });
+  getWebhookUrl().then(function (url) {
+    if (!url) return; // chưa cấu hình trong /admin, bỏ qua im lặng
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(Object.assign({ type: type }, payload)),
+    }).catch(function (err) { console.error('Không gửi được dữ liệu về Google:', err); });
+  });
 }
 
 // =========================================================================
@@ -421,7 +432,6 @@ function initEkycPage() {
     btnAutoSign.addEventListener('click', function () {
       if (!fullnameInput.value.trim()) { showFormMessage(msgEl, 'Vui lòng nhập họ tên trước khi dùng chữ ký nhanh.', true); return; }
       sigPad.drawText(fullnameInput.value.trim());
-      checkReadyForSubmit();
     });
   }
 
@@ -429,11 +439,17 @@ function initEkycPage() {
     if (state.front && state.back && state.selfie) {
       step3.style.display = 'block';
     }
-    checkReadyForSubmit();
   }
-  function checkReadyForSubmit() {
-    var ready = state.front && state.back && state.selfie && agree.checked && fullnameInput.value.trim() && sigPad && !sigPad.isEmpty();
-    btnSubmit.disabled = !ready;
+
+  function missingItems() {
+    var missing = [];
+    if (!state.front) missing.push('ảnh mặt trước CCCD');
+    if (!state.back) missing.push('ảnh mặt sau CCCD');
+    if (!state.selfie) missing.push('ảnh chụp khuôn mặt qua camera');
+    if (!fullnameInput.value.trim()) missing.push('họ tên đầy đủ');
+    if (!agree.checked) missing.push('tích đồng ý với nội dung hợp đồng');
+    if (!sigPad || sigPad.isEmpty()) missing.push('chữ ký (vẽ tay hoặc bấm "Dùng họ tên làm chữ ký")');
+    return missing;
   }
 
   frontInput.addEventListener('change', function () {
@@ -486,15 +502,17 @@ function initEkycPage() {
     btnRetake.style.display = 'none';
     btnOpenCam.style.display = 'inline-flex';
     state.selfie = null;
-    checkReadyForSubmit();
   });
 
-  agree.addEventListener('change', checkReadyForSubmit);
-  fullnameInput.addEventListener('input', checkReadyForSubmit);
-  document.getElementById('sign-pad').addEventListener('mouseup', checkReadyForSubmit);
-  document.getElementById('sign-pad').addEventListener('touchend', checkReadyForSubmit);
+  agree.addEventListener('change', function () { msgEl.style.display = 'none'; });
 
   btnSubmit.addEventListener('click', function () {
+    var missing = missingItems();
+    if (missing.length > 0) {
+      showFormMessage(msgEl, 'Bạn cần bổ sung: ' + missing.join(', ') + '.', true);
+      if (typeof msgEl.scrollIntoView === 'function') msgEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
     BM.saveEkycStep(user.id, {
       cccdFront: state.front, cccdBack: state.back, selfie: state.selfie,
       signatureDataUrl: sigPad.getDataURL(), fullName: fullnameInput.value.trim(),
@@ -668,6 +686,7 @@ function initContractPage() {
       if (!agree.checked) { showFormMessage(msgEl, 'Vui lòng đồng ý với nội dung hợp đồng trước khi ký.', true); return; }
       if (!sigPad || sigPad.isEmpty()) { showFormMessage(msgEl, 'Vui lòng ký tên vào ô chữ ký.', true); return; }
       BM.signBookingContract(bookingId, sigPad.getDataURL(), signerName.value.trim());
+      sendToGoogleBackend('contract_signed', { bookingId: bookingId });
       showFormMessage(msgEl, 'Đã ký hợp đồng và xác nhận đặt lịch thành công! Đang chuyển tới trang đơn hàng...', false);
       setTimeout(function () { window.location.href = 'don-hang.html'; }, 900);
     });

@@ -36,5 +36,6 @@
   "rating": 4.9,
   "job": "Quản lý nhà hàng",
   "birth": "02/01/1996",
-  "age": 29
+  "age": 29,
+  "services_offered": []
 }

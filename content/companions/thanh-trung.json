@@ -36,5 +36,6 @@
   "rating": 4.9,
   "job": "Nhân viên truyền thông",
   "birth": "14/04/1999",
-  "age": 26
+  "age": 26,
+  "services_offered": []
 }

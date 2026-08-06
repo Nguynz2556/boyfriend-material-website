@@ -192,7 +192,7 @@ function wireBooking() {
       return;
     }
 
-    var companionName = document.querySelector('.book-card h3').textContent.replace('Đặt lịch với ', '');
+    var bookCardEl = document.querySelector('.book-card'); var companionName = (bookCardEl && bookCardEl.getAttribute('data-full-name')) || (document.querySelector('.book-card h3') ? document.querySelector('.book-card h3').textContent.replace('Đặt lịch với ', '') : '');
     var dateInput = document.querySelector('.book-card input[type="date"]');
     var locationInput = document.querySelector('#book-location');
     var timeFrom = document.querySelector('#book-time-from');
@@ -220,10 +220,14 @@ function wireBooking() {
     });
 
     if (typeof sendToGoogleBackend === 'function') {
+      var ekycInfo = (typeof BM !== 'undefined' && BM.getEkyc) ? BM.getEkyc(user.id) : null;
       sendToGoogleBackend('booking', {
+        bookingId: booking.id,
         companionName: companionName, service: priceText,
         date: dateInput ? dateInput.value : '', timeRange: timeRange,
+        location: locationInput ? locationInput.value.trim() : '',
         userEmail: user.email, userName: user.name,
+        phone: ekycInfo ? ekycInfo.phone : '',
       });
     }
 
@@ -235,7 +239,7 @@ function wireBooking() {
     if (link.textContent.indexOf('Nhắn tin') === -1) return;
     link.addEventListener('click', function (e) {
       e.preventDefault();
-      var companionName = document.querySelector('.book-card h3').textContent.replace('Đặt lịch với ', '');
+      var bookCardEl = document.querySelector('.book-card'); var companionName = (bookCardEl && bookCardEl.getAttribute('data-full-name')) || (document.querySelector('.book-card h3') ? document.querySelector('.book-card h3').textContent.replace('Đặt lịch với ', '') : '');
       window.location.href = 'tin-nhan.html?with=' + encodeURIComponent(companionName);
     });
   });

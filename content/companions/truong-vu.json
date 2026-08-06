@@ -36,5 +36,6 @@
   "rating": 5,
   "job": "Huấn luyện viên thể hình",
   "birth": "30/05/1999",
-  "age": 26
+  "age": 26,
+  "services_offered": []
 }

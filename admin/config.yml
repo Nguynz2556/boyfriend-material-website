@@ -31,6 +31,10 @@ collections:
     format: "json"
     extension: "json"
     identifier_field: "name"
+    # Mỗi người có 1 thư mục ảnh RIÊNG (theo slug) — tránh 2 người vô tình tải ảnh trùng tên
+    # gốc (ví dụ cả 2 đều tên IMG_0001.jpg từ điện thoại) rồi ghi đè ảnh của nhau.
+    media_folder: "/images/uploads/{{slug}}"
+    public_folder: "/images/uploads/{{slug}}"
     fields:
       - { label: "ID (số thứ tự, không trùng)", name: "id", widget: "number" }
       - { label: "Đường dẫn (slug, viết liền không dấu, ví dụ hoang-nguyen)", name: "slug", widget: "string" }
@@ -40,7 +44,7 @@ collections:
         name: "loc"
         widget: "select"
         options: ["TP. Hồ Chí Minh", "Hà Nội", "Đà Nẵng"]
-      - { label: "Giá / giờ (VNĐ)", name: "price", widget: "number" }
+      - { label: "Giá / giờ (VNĐ) — không dùng để hiện giá, chỉ để tham khảo nội bộ", name: "price", widget: "number", required: false }
       - { label: "Đánh giá (1-5)", name: "rating", widget: "number", value_type: "float", min: 1, max: 5 }
       - { label: "Số lượt đánh giá", name: "reviews", widget: "number" }
       - { label: "Số lượt đặt", name: "bookings", widget: "number" }
@@ -51,6 +55,13 @@ collections:
         name: "activity"
         widget: "select"
         options: ["Đi ăn / Cafe", "Du lịch", "Sự kiện", "Xem phim", "Mua sắm", "Chơi game"]
+      - label: "Dịch vụ người này cung cấp (bỏ trống = cung cấp TẤT CẢ dịch vụ)"
+        name: "services_offered"
+        widget: "select"
+        multiple: true
+        required: false
+        hint: "Danh sách phải khớp đúng chính tả với tên dịch vụ ở mục Trang Dịch vụ. Bỏ trống nếu người này nhận mọi dịch vụ."
+        options: ["Đi ăn / Cafe", "Du lịch", "Sự kiện", "Mua sắm", "Xem phim", "Chơi game", "Thể thao / Concert", "Học tập", "Trò chuyện online", "Tâm sự", "Trợ lý cá nhân", "Gym / Tập luyện cùng"]
       - { label: "Giới thiệu", name: "bio", widget: "text" }
       - label: "Sở thích"
         name: "hobbies"
@@ -94,7 +105,13 @@ collections:
         label: "Logo, Trang chủ & Liên hệ"
         file: "content/settings.json"
         fields:
-          - { label: "Logo (hiện ở header + footer mọi trang)", name: "site_logo", widget: "image" }
+          - { label: "Logo (hiện ở header + footer mọi trang)", name: "site_logo", widget: "image", media_folder: "/images/uploads/site", public_folder: "/images/uploads/site" }
+          - label: "Đường dẫn Apps Script (kết nối Google Sheet — xem HUONG-DAN.md mục 25)"
+            name: "google_webapp_url"
+            widget: "string"
+            required: false
+            hint: "Dán URL dạng https://script.google.com/macros/s/.../exec sau khi deploy Apps Script. Để trống thì mọi lượt đăng ký/đặt lịch sẽ KHÔNG được gửi về Google Sheet."
+          - { label: "Ảnh minh hoạ trang chủ (bên phải khu vực tiêu đề)", name: "hero_image", widget: "image", required: false, media_folder: "/images/uploads/site", public_folder: "/images/uploads/site" }
           - { label: "Tiêu đề trang chủ - dòng 1", name: "hero_title_line1", widget: "string" }
           - { label: "Tiêu đề trang chủ - chữ nhấn (màu vàng)", name: "hero_title_accent", widget: "string" }
           - { label: "Mô tả ngắn trang chủ", name: "hero_desc", widget: "text" }
@@ -165,7 +182,7 @@ collections:
           - { label: "Tiêu đề", name: "intro_title", widget: "string" }
           - { label: "Mô tả ngắn", name: "intro_desc", widget: "text" }
           - { label: "Nội dung sứ mệnh", name: "mission_text", widget: "text" }
-          - { label: "Ảnh minh hoạ", name: "image", widget: "image" }
+          - { label: "Ảnh minh hoạ", name: "image", widget: "image", media_folder: "/images/uploads/about", public_folder: "/images/uploads/about" }
           - label: "4 ô số liệu thống kê"
             name: "stats"
             widget: "list"

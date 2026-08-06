@@ -272,8 +272,71 @@ Nguyên nhân hay gặp nhất: thư mục `content/pages/` (chứa `dich-vu.jso
 ## 20. Đã sửa: nút "Tin nhắn" / "Đơn hàng" bị ẩn mất trên điện thoại
 Lỗi CSS: quy tắc ẩn bớt nút trên màn hình nhỏ (để đỡ chật menu) trước đây áp dụng nhầm cho MỌI nút viền (kể cả "Tin nhắn", "Đơn hàng"), thay vì chỉ áp dụng cho nút "Đăng nhập" như dự định ban đầu. Đã sửa lại đúng phạm vi — giờ trên điện thoại, sau khi đăng nhập sẽ thấy đủ "Tin nhắn" và "Đơn hàng" trong menu.
 
-## Form liên hệ / đăng ký nhận tin (Formspree)
-Đăng ký miễn phí tại formspree.io, tạo form, thay `YOUR_FORM_ID` trong các file `.html` bằng ID thật.
+## 21. Đã sửa: eKYC "bấm hoàn tất không được"
+Nguyên nhân thật: nút "Hoàn tất" bị khoá cứng (disabled) và chỉ tự mở khi đủ CÙNG LÚC 6 điều kiện (2 ảnh CCCD, ảnh chụp mặt, họ tên, tick đồng ý, chữ ký) — nhưng không có bất kỳ dòng chữ nào báo đang thiếu gì, nên bấm vào thấy "không có gì xảy ra". Đã sửa: nút giờ luôn bấm được, bấm vào sẽ liệt kê chính xác **còn thiếu đúng những gì** (ví dụ: "Bạn cần bổ sung: ảnh mặt trước CCCD, tích đồng ý với nội dung hợp đồng").
+
+## 22. Mới: Chọn dịch vụ riêng cho từng người đồng hành (mục 4)
+Trong `/admin` → **Người đồng hành** → mở hồ sơ 1 người → mục **"Dịch vụ người này cung cấp"** — chọn nhiều dịch vụ trong danh sách (giữ Ctrl/Cmd để chọn nhiều, hoặc bấm từng ô tuỳ giao diện). **Để trống = người đó nhận TẤT CẢ dịch vụ** (giữ nguyên hành vi cũ, không ảnh hưởng người chưa cấu hình).
+⚠️ Tên dịch vụ ở đây phải khớp **chính xác từng chữ** với tên dịch vụ ở "Trang Dịch vụ" (đây là giới hạn kỹ thuật — nếu bạn đổi tên 1 dịch vụ ở Trang Dịch vụ, nhớ sửa lại đúng tên đó ở đây cho từng người đã chọn dịch vụ đó).
+
+## 23. Đã sửa: thêm được ảnh minh hoạ trang chủ (mục 5)
+Trước đây ảnh minh hoạ trang chủ (khung bên phải phần tiêu đề) chưa được nối với admin — dù bạn tải ảnh cỡ nào cũng không có chỗ lưu. Đã thêm trường mới trong `/admin` → **Thông tin chung** → **"Ảnh minh hoạ trang chủ"**.
+
+## 24. Đã sửa lỗi NGHIÊM TRỌNG: ảnh bị đè/nhảy giữa các hồ sơ (mục 6)
+**Nguyên nhân xác nhận được:** tất cả ảnh tải lên (avatar, ảnh bìa, gallery của MỌI người đồng hành) trước đây đều lưu chung 1 thư mục `images/uploads/`. Nếu 2 ảnh khác nhau vô tình có **tên file gốc trùng nhau** (rất dễ xảy ra — ví dụ ảnh xuất từ điện thoại tên `3.png`, `6.png`, `8.png`...), ảnh tải lên sau sẽ **ghi đè thẳng lên ảnh cũ cùng tên**, khiến nhiều hồ sơ vô tình cùng trỏ về 1 file ảnh đã bị thay nội dung — đúng hiện tượng "ảnh cũ mất dần, ảnh nhảy lung tung giữa các người".
+
+**Đã sửa tận gốc:** mỗi người đồng hành giờ có **1 thư mục ảnh riêng biệt** (tự động theo "slug" của người đó, ví dụ `images/uploads/hoang-nguyen/`), tải ảnh cho người này tuyệt đối không thể đụng tới ảnh của người khác nữa dù trùng tên file gốc. Logo và ảnh trang chủ/Về chúng tôi cũng được tách riêng thư mục (`images/uploads/site/`, `images/uploads/about/`).
+
+⚠️ **Lưu ý quan trọng:** các ảnh đã bị ghi đè trước khi có bản sửa này thì dữ liệu ảnh gốc đã mất, không tự khôi phục được. Bạn cần **kiểm tra lại từng hồ sơ, tải lại ảnh đúng cho từng người** sau khi cập nhật code này — nhưng từ giờ về sau sẽ không còn bị đè nữa.
+
+
+## 25. Hướng A — Google Sheet làm "backend nhẹ", theo thời gian thực (MỚI)
+
+Đã nâng cấp: mọi lượt **đăng ký tài khoản**, **đặt lịch**, **ký hợp đồng**, **gửi form liên hệ** giờ tự động ghi vào Google Sheet của bạn — **theo thời gian thực**, không cần bấm nút gì thêm, không cần sửa code (chỉ cần dán 1 đường link duy nhất vào `/admin`).
+
+Sheet sẽ có **3 tab tự động tạo**:
+- **Tài khoản** — mỗi dòng là 1 người đăng ký, gồm: tên, email, vai trò (khách hàng/người đồng hành), trạng thái eKYC, SĐT.
+- **Đơn hàng** — mỗi dòng là 1 lượt đặt lịch, gồm: mã đơn, tên khách, email, SĐT, người đồng hành, dịch vụ, ngày giờ hẹn, địa điểm, và **trạng thái tự cập nhật** ("Mới đặt" → "Đã ký hợp đồng - Đã xác nhận" ngay khi khách ký xong).
+- **Liên hệ** — mỗi dòng là 1 lượt gửi form ở trang Liên hệ.
+
+### Thiết lập (chỉ cần làm 1 lần)
+
+**Bước 1: Mở Google Sheet của bạn**
+Vào link Sheet: `https://docs.google.com/spreadsheets/d/11kZaknpPXUbovbguPVJHB9NwmYx3qR3-l8ENWtno9YU/edit`
+→ Menu **Tiện ích mở rộng (Extensions) → Apps Script**.
+
+**Bước 2: Dán code**
+- Xoá hết code mẫu có sẵn trong ô soạn thảo.
+- Mở file `google-apps-script.gs` (có sẵn trong thư mục website bạn tải về), copy toàn bộ, dán vào.
+- Bấm biểu tượng 💾 Lưu.
+
+**Bước 3: Deploy thành Web App**
+1. Góc trên bên phải, bấm **Deploy → New deployment**.
+2. Bấm biểu tượng ⚙️ cạnh "Select type" → chọn **Web app**.
+3. "Execute as": chọn **Me**.
+4. "Who has access": chọn **Anyone**.
+5. Bấm **Deploy** → cấp quyền khi được hỏi (Authorize access → Advanced → Go to (tên project) unsafe → Allow).
+6. Copy **Web app URL** dạng `https://script.google.com/macros/s/AKfycb.../exec`.
+
+**Bước 4 (KHÁC BẢN CŨ — không cần sửa code nữa!): dán URL vào `/admin`**
+1. Vào `/admin` → mục **Thông tin chung**.
+2. Tìm ô **"Đường dẫn Apps Script (kết nối Google Sheet)"** → dán URL vừa copy vào đó.
+3. Bấm **Publish**.
+
+Xong — từ giờ mọi hoạt động của khách sẽ tự động hiện trong Sheet theo thời gian thực. Mở Sheet lên và để đó, dữ liệu sẽ tự chạy vào khi có khách thao tác trên web.
+
+### Cách tự kiểm tra đã chạy đúng chưa
+1. Dán thử link Web App (Bước 3.6) trực tiếp vào một tab trình duyệt mới — phải thấy dòng chữ "Boyfriend Material webhook đang hoạt động ✅".
+2. Vào web, thử tạo 1 tài khoản test → mở lại Sheet → tab "Tài khoản" phải xuất hiện dòng mới trong vài giây.
+3. Thử đặt lịch 1 lượt test → tab "Đơn hàng" phải có dòng mới, trạng thái "Mới đặt (chờ ký hợp đồng)".
+4. Ký hợp đồng cho lượt đặt test đó → dòng vừa rồi trong tab "Đơn hàng" phải tự đổi trạng thái thành "Đã ký hợp đồng - Đã xác nhận" (không tạo dòng mới, mà SỬA đúng dòng cũ).
+
+### Giới hạn cần biết (Hướng A vẫn KHÔNG phải backend đầy đủ)
+- **Không phải hệ thống đăng nhập bảo mật thật** — tài khoản/mật khẩu vẫn chỉ lưu trong trình duyệt từng khách (localStorage), Sheet chỉ là nơi bạn **xem lại** ai đã đăng ký/đặt gì, không dùng để khách đăng nhập lại trên máy khác.
+- Google Apps Script có giới hạn ~20.000 lượt gọi/ngày cho tài khoản miễn phí — dư sức cho giai đoạn mới bắt đầu, nhưng khi lượng khách lớn cần nâng cấp lên Hướng B (Supabase/Firebase).
+- Vì gọi theo kiểu "gửi rồi không đợi phản hồi" (để không làm chậm trải nghiệm khách), nếu URL dán sai hoặc Apps Script bị lỗi, **web sẽ không tự báo cho bạn biết** — nên làm đúng theo "Cách tự kiểm tra" ở trên sau khi thiết lập xong.
+
+
 
 ## SEO cơ bản đã thêm
 Meta description + Open Graph cho các trang chính; favicon dùng logo thật; `robots.txt` và `sitemap.xml` ở thư mục gốc (nhớ thay `your-domain.com` bằng `boyfriendmaterial.io.vn` thật).

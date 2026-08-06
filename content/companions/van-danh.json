@@ -38,5 +38,6 @@
   "rating": 5,
   "job": "Chuyên viên Marketing",
   "birth": "03/03/2005",
-  "age": 21
+  "age": 21,
+  "services_offered": []
 }

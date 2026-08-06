@@ -36,5 +36,6 @@
   "rating": 5,
   "job": "Nhân viên ngân hàng",
   "birth": "20/02/1999",
-  "age": 25
+  "age": 25,
+  "services_offered": []
 }

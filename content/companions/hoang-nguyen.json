@@ -39,5 +39,6 @@
   "rating": 4.9,
   "job": "Nhân viên Marketing",
   "birth": "12/06/2000",
-  "age": 24
+  "age": 24,
+  "services_offered": []
 }
