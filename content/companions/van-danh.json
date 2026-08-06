@@ -1,8 +1,8 @@
 {
-  "loc": "Hà Nội",
+  "loc": "TP. Hồ Chí Minh",
   "height": "1m80",
   "bio": "Mình là Danh, thích khám phá những vùng đất mới và luôn sẵn sàng đồng hành cùng bạn trong những chuyến đi ngắn ngày hay dài ngày. Mình điềm đạm, biết lắng nghe và tôn trọng ranh giới của người khác.",
-  "price": 550000,
+  "price": 1000000,
   "name": "Văn Danh",
   "slug": "van-danh",
   "personality": [
@@ -18,9 +18,9 @@
     "Leo núi",
     "Cafe",
     "Công nghệ",
-    "Bơi lội"
+    "Võ thuật"
   ],
-  "hometown": "Hải Phòng",
+  "hometown": "Cà Mau",
   "gallery": [
     "images/uploads/1785648556061_2882336867311354951_g3327100699746381419_98ffa1fcec69a1b9d2331cc0febd53d0.jpg",
     "images/uploads/1785648556247_2882336867311354951_g3327100699746381419_3999a8fe2569ce2d0e8ae84a9ec4b2b3.jpg",
@@ -35,8 +35,8 @@
   "bookings": 214,
   "reviews": 98,
   "id": 2,
-  "rating": 4.8,
-  "job": "Kỹ sư phần mềm",
-  "birth": "03/11/1998",
-  "age": 27
+  "rating": 5,
+  "job": "Chuyên viên Marketing",
+  "birth": "03/03/2005",
+  "age": 21
 }
