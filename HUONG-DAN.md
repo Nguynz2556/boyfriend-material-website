@@ -364,7 +364,27 @@ Khối "Sẵn sàng tìm đồng hành phù hợp?" ở cuối trang chủ trư�
 ### Về eKYC "vẫn không gửi được"
 Đã kiểm tra lại code — bản mới nhất **đã có đủ 2 lần sửa trước** (nút không còn bị khoá cứng, có dự phòng khi Canvas bị chặn). Nếu vẫn gặp lỗi, nhiều khả năng trình duyệt đang hiển thị bản cache cũ. Thử: bấm **Ctrl+Shift+R** (tải lại bỏ qua cache) hoặc mở bằng **cửa sổ ẩn danh**, làm lại từ đầu. Nếu vẫn lỗi, chụp lại đúng màn hình lúc bấm "Hoàn tất" (kèm dòng thông báo đỏ nếu có hiện ra) gửi mình xem — hiện mình chưa có ảnh chụp đúng lúc lỗi xảy ra nên chưa xác định được điểm khác so với 2 lần đã sửa trước.
 
-## 27. Tiết kiệm credit Netlify — quy trình duyệt bài mới (Editorial Workflow)
+## 27. Đã tìm ra NGUYÊN NHÂN THẬT của lỗi eKYC "bấm hoàn tất không được"
+
+Nhờ ảnh chụp màn hình DevTools bạn gửi, tìm ra chính xác lỗi:
+```
+Uncaught QuotaExceededError: Failed to execute 'setItem' on 'Storage':
+Setting the value of 'bm_ekyc' exceeded the quota.
+```
+
+**Nguyên nhân thật:** ảnh CCCD/khuôn mặt chụp từ điện thoại thường nặng vài MB/ảnh. Trước đây web lưu **nguyên ảnh gốc** vào bộ nhớ trình duyệt (localStorage) — nhưng localStorage chỉ cho phép tổng cộng khoảng **5-10MB cho mỗi website**. Với 2 ảnh CCCD + 1 ảnh chụp mặt không nén, rất dễ vượt giới hạn này ngay từ lần xác minh đầu tiên → trình duyệt từ chối lưu → nút "Hoàn tất" bấm vào không có phản hồi gì (lỗi xảy ra âm thầm, chỉ hiện trong DevTools mà người dùng bình thường không thấy được).
+
+*(Đây là nguyên nhân khác với 2 lần sửa trước — lần 1 sửa nút bị khoá cứng không báo lỗi, lần 2 sửa Canvas bị chặn; lần này là do dung lượng ảnh vượt giới hạn lưu trữ.)*
+
+**Đã sửa tận gốc — 2 lớp bảo vệ:**
+1. **Tự động nén ảnh trước khi lưu:** ảnh CCCD được thu nhỏ về tối đa 1000px chiều dài + nén chất lượng vừa phải, ảnh chụp mặt tối đa 640px — giảm dung lượng xuống còn khoảng vài chục KB đến ~200KB/ảnh (thay vì vài MB), gần như không bao giờ vượt giới hạn nữa trong điều kiện dùng bình thường.
+2. **Bọc lưới an toàn:** nếu trình duyệt của khách vẫn báo đầy bộ nhớ (trường hợp hiếm, ví dụ trình duyệt đã lưu quá nhiều dữ liệu demo khác từ trước), giờ sẽ hiện **thông báo rõ ràng bằng tiếng Việt** hướng dẫn xoá bớt dữ liệu duyệt web cũ, thay vì im lặng không phản hồi như trước.
+
+Áp dụng bảo vệ tương tự cho bước **ký hợp đồng** (cũng lưu ảnh chữ ký, có nguy cơ tương tự).
+
+**Nếu bạn đã từng test eKYC nhiều lần trước đó và bị lỗi**, dữ liệu ảnh cũ (không nén, nặng) có thể vẫn còn tồn đọng trong trình duyệt bạn đang dùng để test, chiếm sẵn phần lớn dung lượng. Nên **xoá dữ liệu duyệt web cho trang này** trước khi test lại (Cài đặt trình duyệt → Quyền riêng tư → Xoá dữ liệu duyệt web → chọn đúng site `boyfriendmaterial.io.vn`), hoặc test bằng **cửa sổ ẩn danh** cho sạch sẽ.
+
+## 28. Tiết kiệm credit Netlify — quy trình duyệt bài mới (Editorial Workflow)
 
 Trước đây mỗi lần bấm **Publish** trong `/admin` là lập tức tính 1 lần deploy trên Netlify (tốn credit ngay, dù bạn chỉ sửa 1 chữ). Đã đổi `admin/config.yml` sang chế độ **Editorial Workflow** — cho phép gom nhiều thay đổi lại, chỉ deploy 1 lần khi bạn thực sự publish xong xuôi.
 

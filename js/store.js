@@ -29,7 +29,16 @@ const BM = (function () {
     }
   }
   function write(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      console.error('Không lưu được "' + key + '" vào trình duyệt:', e);
+      if (e && (e.name === 'QuotaExceededError' || e.code === 22 || e.code === 1014)) {
+        throw new Error('QUOTA_EXCEEDED');
+      }
+      throw e;
+    }
   }
   function uid() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);

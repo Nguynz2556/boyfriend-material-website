@@ -403,6 +403,35 @@ function fileToDataURL(file, callback) {
   reader.readAsDataURL(file);
 }
 
+// Nén + thu nhỏ ảnh trước khi lưu vào localStorage — ảnh gốc từ điện thoại/camera
+// thường nặng vài MB, trong khi localStorage chỉ cho tổng cộng khoảng 5-10MB/trang web.
+// Không nén sẽ gây lỗi "QuotaExceededError" khi lưu (làm nút Hoàn tất "không phản hồi").
+function compressImageDataURL(dataUrl, maxDim, quality, callback) {
+  var img = new Image();
+  img.onload = function () {
+    var w = img.width, h = img.height;
+    if (w > h && w > maxDim) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+    else if (h >= w && h > maxDim) { w = Math.round(w * (maxDim / h)); h = maxDim; }
+    var canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) { callback(dataUrl); return; } // không nén được thì thôi, dùng ảnh gốc
+    ctx.drawImage(img, 0, 0, w, h);
+    try {
+      callback(canvas.toDataURL('image/jpeg', quality || 0.7));
+    } catch (e) {
+      callback(dataUrl);
+    }
+  };
+  img.onerror = function () { callback(dataUrl); };
+  img.src = dataUrl;
+}
+function fileToCompressedDataURL(file, callback) {
+  fileToDataURL(file, function (raw) {
+    compressImageDataURL(raw, 1000, 0.7, callback);
+  });
+}
+
 // =========================================================================
 // Trang eKYC — CCCD trước/sau + quét khuôn mặt qua camera + ký hợp đồng
 // =========================================================================
@@ -462,7 +491,7 @@ function initEkycPage() {
 
   frontInput.addEventListener('change', function () {
     if (!frontInput.files[0]) return;
-    fileToDataURL(frontInput.files[0], function (url) {
+    fileToCompressedDataURL(frontInput.files[0], function (url) {
       state.front = url;
       frontPreview.src = url; frontPreview.style.display = 'block';
       checkReadyForContract();
@@ -470,7 +499,7 @@ function initEkycPage() {
   });
   backInput.addEventListener('change', function () {
     if (!backInput.files[0]) return;
-    fileToDataURL(backInput.files[0], function (url) {
+    fileToCompressedDataURL(backInput.files[0], function (url) {
       state.back = url;
       backPreview.src = url; backPreview.style.display = 'block';
       checkReadyForContract();
@@ -492,10 +521,14 @@ function initEkycPage() {
   });
 
   btnCapture.addEventListener('click', function () {
-    canvas.width = video.videoWidth || 360;
-    canvas.height = video.videoHeight || 360;
-    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-    state.selfie = canvas.toDataURL('image/jpeg', 0.85);
+    var srcW = video.videoWidth || 360, srcH = video.videoHeight || 360;
+    var maxDim = 640;
+    var w = srcW, h = srcH;
+    if (w > h && w > maxDim) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+    else if (h >= w && h > maxDim) { w = Math.round(w * (maxDim / h)); h = maxDim; }
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(video, 0, 0, w, h);
+    state.selfie = canvas.toDataURL('image/jpeg', 0.7);
     selfiePreview.src = state.selfie;
     selfiePreview.style.display = 'block';
     video.style.display = 'none';
@@ -521,12 +554,22 @@ function initEkycPage() {
       if (typeof msgEl.scrollIntoView === 'function') msgEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
-    BM.saveEkycStep(user.id, {
-      cccdFront: state.front, cccdBack: state.back, selfie: state.selfie,
-      signatureDataUrl: sigPad.getDataURL(), fullName: fullnameInput.value.trim(),
-      phone: phoneInput.value.trim(),
-      verifiedAt: Date.now(),
-    });
+    try {
+      BM.saveEkycStep(user.id, {
+        cccdFront: state.front, cccdBack: state.back, selfie: state.selfie,
+        signatureDataUrl: sigPad.getDataURL(), fullName: fullnameInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        verifiedAt: Date.now(),
+      });
+    } catch (err) {
+      if (err && err.message === 'QUOTA_EXCEEDED') {
+        showFormMessage(msgEl, 'Ảnh bạn tải lên vẫn còn quá nặng so với giới hạn lưu trữ của trình duyệt. Hãy thử: (1) chụp lại ảnh CCCD với độ phân giải thấp hơn, hoặc (2) xoá bớt dữ liệu cũ của trang này trong trình duyệt (Cài đặt trình duyệt → Quyền riêng tư → Xoá dữ liệu duyệt web cho trang này), rồi thử lại.', true);
+      } else {
+        showFormMessage(msgEl, 'Có lỗi khi lưu thông tin xác minh. Vui lòng thử lại hoặc liên hệ hỗ trợ.', true);
+        console.error(err);
+      }
+      return;
+    }
     showFormMessage(msgEl, 'Xác minh eKYC thành công! Đang chuyển hướng...', false);
     sendToGoogleBackend('ekyc_completed', { name: user.name, email: user.email });
     var params = new URLSearchParams(window.location.search);
@@ -693,7 +736,17 @@ function initContractPage() {
     btnSign.addEventListener('click', function () {
       if (!agree.checked) { showFormMessage(msgEl, 'Vui lòng đồng ý với nội dung hợp đồng trước khi ký.', true); return; }
       if (!sigPad || sigPad.isEmpty()) { showFormMessage(msgEl, 'Vui lòng ký tên vào ô chữ ký.', true); return; }
-      BM.signBookingContract(bookingId, sigPad.getDataURL(), signerName.value.trim());
+      try {
+        BM.signBookingContract(bookingId, sigPad.getDataURL(), signerName.value.trim());
+      } catch (err) {
+        if (err && err.message === 'QUOTA_EXCEEDED') {
+          showFormMessage(msgEl, 'Trình duyệt đã đầy dung lượng lưu trữ cho trang này. Hãy xoá bớt dữ liệu duyệt web cũ của trang (Cài đặt trình duyệt → Quyền riêng tư → Xoá dữ liệu cho trang này) rồi thử ký lại.', true);
+        } else {
+          showFormMessage(msgEl, 'Có lỗi khi lưu chữ ký. Vui lòng thử lại.', true);
+          console.error(err);
+        }
+        return;
+      }
       sendToGoogleBackend('contract_signed', { bookingId: bookingId });
       showFormMessage(msgEl, 'Đã ký hợp đồng và xác nhận đặt lịch thành công! Đang chuyển tới trang đơn hàng...', false);
       setTimeout(function () { window.location.href = 'don-hang.html'; }, 900);
