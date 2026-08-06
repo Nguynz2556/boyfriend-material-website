@@ -107,6 +107,10 @@ function initHomeContent() {
     if (heroPhotoWrap && s.hero_image) {
       heroPhotoWrap.innerHTML = '<img src="' + s.hero_image + '" alt="Boyfriend Material" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
     }
+    var ctaImageWrap = document.getElementById('cta-image-wrap');
+    if (ctaImageWrap && s.cta_image) {
+      ctaImageWrap.outerHTML = '<img src="' + s.cta_image + '" alt="Boyfriend Material" style="width:100%;border-radius:var(--radius-md);margin:16px 0;">';
+    }
   });
 }
 

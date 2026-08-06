@@ -16,7 +16,15 @@ media_folder: "images/uploads"
 public_folder: "images/uploads"
 
 # Bật xem trước bên phải màn hình khi soạn nội dung
-publish_mode: simple
+publish_mode: editorial_workflow
+
+# Tự động đổi tên file khi tải ảnh lên: bỏ dấu tiếng Việt, đổi khoảng trắng/ký tự đặc biệt
+# thành dấu gạch ngang -> tránh lỗi deploy do tên file như "thiết-kế-chưa-có-tên.png"
+# (Netlify từ chối deploy file có ký tự có dấu/đặc biệt trong tên).
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
 
 collections:
 
@@ -112,6 +120,7 @@ collections:
             required: false
             hint: "Dán URL dạng https://script.google.com/macros/s/.../exec sau khi deploy Apps Script. Để trống thì mọi lượt đăng ký/đặt lịch sẽ KHÔNG được gửi về Google Sheet."
           - { label: "Ảnh minh hoạ trang chủ (bên phải khu vực tiêu đề)", name: "hero_image", widget: "image", required: false, media_folder: "/images/uploads/site", public_folder: "/images/uploads/site" }
+          - { label: "Ảnh banner CTA cuối trang chủ (khối 'Sẵn sàng tìm đồng hành phù hợp?')", name: "cta_image", widget: "image", required: false, media_folder: "/images/uploads/site", public_folder: "/images/uploads/site" }
           - { label: "Tiêu đề trang chủ - dòng 1", name: "hero_title_line1", widget: "string" }
           - { label: "Tiêu đề trang chủ - chữ nhấn (màu vàng)", name: "hero_title_accent", widget: "string" }
           - { label: "Mô tả ngắn trang chủ", name: "hero_desc", widget: "text" }
@@ -152,6 +161,15 @@ collections:
         fields:
           - { label: "Tiêu đề", name: "intro_title", widget: "string" }
           - { label: "Mô tả", name: "intro_desc", widget: "string" }
+          - label: "Danh sách dịch vụ (áp dụng chung cho mọi người đồng hành)"
+            name: "services"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.price}}"
+            fields:
+              - { label: "Icon (emoji)", name: "icon", widget: "string" }
+              - { label: "Tên dịch vụ", name: "name", widget: "string" }
+              - { label: "Mô tả ngắn", name: "desc", widget: "string" }
+              - { label: "Giá (ví dụ: 300.000đ/giờ)", name: "price", widget: "string" }
           - label: "Các gói Theo giờ"
             name: "packages_hourly"
             widget: "list"

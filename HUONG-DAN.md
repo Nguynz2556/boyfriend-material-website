@@ -338,5 +338,49 @@ Xong — từ giờ mọi hoạt động của khách sẽ tự động hiện t
 
 
 
+## 26. Đợt sửa lỗi mới nhất
+
+### Đã sửa: không tìm thấy chỗ sửa giá dịch vụ trong admin
+**Đây là lỗi thật do mình bỏ sót** — lần thêm 12 dịch vụ vào dữ liệu, mình quên thêm ô tương ứng trong cấu hình admin, nên "Trang Dịch vụ" trong `/admin` trước đó chỉ sửa được gói giờ/ngày, KHÔNG sửa được 12 dịch vụ + giá. Đã bổ sung — vào `/admin` → **Trang Dịch vụ** → mục **"Danh sách dịch vụ"**, sửa/thêm/xoá từng dịch vụ và giá thoải mái. Đây cũng chính là danh sách hiện ở trang Dịch vụ VÀ dropdown "Chọn dịch vụ" ở mọi hồ sơ — sửa 1 chỗ áp dụng khắp nơi.
+
+### Đã nối thêm: ảnh banner CTA cuối trang chủ
+Khối "Sẵn sàng tìm đồng hành phù hợp?" ở cuối trang chủ trước đây chưa có chỗ đổi ảnh. Đã thêm trường **"Ảnh banner CTA cuối trang chủ"** trong `/admin` → Thông tin chung.
+
+### Về việc Google Sheet chưa nhận được dữ liệu
+Đã kiểm tra: `google_webapp_url` bạn đã dán đúng trong `/admin`, code phía web gửi đi đúng định dạng (đã tự test lại). Nguyên nhân nhiều khả năng nhất nằm ở phía Google Apps Script — cụ thể:
+
+**Lỗi hay gặp nhất: sửa code Apps Script nhưng CHƯA deploy lại phiên bản mới.** Khi bạn sửa/dán lại code trong Apps Script, bấm "Lưu" (💾) **KHÔNG** tự cập nhật link Web App đang chạy — Google giữ nguyên phiên bản CŨ cho tới khi bạn chủ động deploy lại. Cách làm đúng:
+1. Trong Apps Script, vào **Deploy → Manage deployments**.
+2. Bấm biểu tượng ✏️ (Edit) cạnh deployment đang có.
+3. Ở mục "Version", chọn **New version**.
+4. Bấm **Deploy**.
+(Link `/exec` giữ nguyên như cũ, không cần cập nhật lại trong `/admin`.)
+
+**Cách tự kiểm tra từng bước:**
+1. Dán thẳng link `https://script.google.com/macros/s/AKfycbxoOpjPEzE6Pzg7DYuF3cQEk9UuYWhNBeurQJLPhcow1ZJbvd4RP5Twwo1yecCuaIXAwA/exec` vào tab trình duyệt mới → phải hiện đúng dòng "Boyfriend Material webhook đang hoạt động ✅ — [ngày giờ hiện tại]". Nếu hiện trang lỗi/trang đăng nhập Google khác → deploy chưa đúng, làm lại Bước 3 Mục 25.
+2. Vào web thật → bấm **F12** mở DevTools → tab **Console** → thử đăng ký 1 tài khoản test → phải thấy dòng chữ xanh dạng `[Google Sheet] Đang gửi "register" tới https://script.google.com/...` (mình vừa thêm dòng log này để bạn tự soi được). Nếu KHÔNG thấy dòng này → `/admin` chưa lưu đúng URL, kiểm tra lại Bước 4 Mục 25.
+3. Nếu thấy dòng log gửi đi rồi mà Sheet vẫn không có gì → khả năng cao do Apps Script chưa deploy lại bản mới nhất (xem trên) — hoặc thử tắt tạm các tiện ích chặn quảng cáo/riêng tư trên trình duyệt (một số tiện ích chặn luôn các domain `script.google.com`) rồi thử lại.
+
+### Về eKYC "vẫn không gửi được"
+Đã kiểm tra lại code — bản mới nhất **đã có đủ 2 lần sửa trước** (nút không còn bị khoá cứng, có dự phòng khi Canvas bị chặn). Nếu vẫn gặp lỗi, nhiều khả năng trình duyệt đang hiển thị bản cache cũ. Thử: bấm **Ctrl+Shift+R** (tải lại bỏ qua cache) hoặc mở bằng **cửa sổ ẩn danh**, làm lại từ đầu. Nếu vẫn lỗi, chụp lại đúng màn hình lúc bấm "Hoàn tất" (kèm dòng thông báo đỏ nếu có hiện ra) gửi mình xem — hiện mình chưa có ảnh chụp đúng lúc lỗi xảy ra nên chưa xác định được điểm khác so với 2 lần đã sửa trước.
+
+## 27. Tiết kiệm credit Netlify — quy trình duyệt bài mới (Editorial Workflow)
+
+Trước đây mỗi lần bấm **Publish** trong `/admin` là lập tức tính 1 lần deploy trên Netlify (tốn credit ngay, dù bạn chỉ sửa 1 chữ). Đã đổi `admin/config.yml` sang chế độ **Editorial Workflow** — cho phép gom nhiều thay đổi lại, chỉ deploy 1 lần khi bạn thực sự publish xong xuôi.
+
+### Giao diện `/admin` sẽ khác trước 1 chút
+- Trước đây: sửa xong → bấm **Publish** → xong ngay.
+- Giờ: sửa xong → bấm **Save** (không phải Publish) → nội dung lưu ở dạng **bản nháp (draft)**, CHƯA lên site thật, CHƯA tốn credit.
+- Có thêm mục **"Editorial Workflow"** ở sidebar trái (cạnh các mục Người đồng hành, Trang Dịch vụ...) — đây là nơi xem lại **tất cả bản nháp đang chờ**, mỗi bản nháp sẽ ở 1 trong 3 cột: **Drafts** (đang sửa) → **In Review** (đang chờ duyệt) → **Ready** (sẵn sàng đăng).
+
+### Cách dùng đúng để tiết kiệm credit
+1. Sửa xong 1 mục (ví dụ 1 người đồng hành) → bấm **Save**. Muốn sửa tiếp mục khác (ví dụ giá dịch vụ) → làm y hệt, bấm **Save**. Cứ thế sửa hết mọi thứ muốn sửa trong ngày hôm đó — **chưa tốn credit nào cả**.
+2. Sửa xong HẾT rồi, vào mục **Editorial Workflow** → kéo (hoặc mở từng bản nháp) từng mục đã sửa sang cột **Ready**.
+3. Mở lại từng bản nháp trong cột Ready → bấm **Publish** (hoặc **Publish now**) — **lúc này mới thực sự tính 1 lần deploy**.
+4. Nếu bạn gom được ví dụ 5 chỗ sửa trong 1 lần publish cuối ngày → chỉ tốn credit tương đương **1 lần deploy** thay vì 5 lần như trước — tiết kiệm 4/5.
+
+⚠️ Lưu ý: mỗi entry (mỗi người đồng hành, mỗi trang...) publish riêng vẫn tính là 1 deploy riêng — muốn tiết kiệm tối đa, cố gắng publish nhiều mục **cùng lúc gần nhau** thay vì rải rác nhiều lần trong ngày.
+
 ## SEO cơ bản đã thêm
+
 Meta description + Open Graph cho các trang chính; favicon dùng logo thật; `robots.txt` và `sitemap.xml` ở thư mục gốc (nhớ thay `your-domain.com` bằng `boyfriendmaterial.io.vn` thật).

@@ -126,13 +126,21 @@ function getWebhookUrl() {
 }
 function sendToGoogleBackend(type, payload) {
   getWebhookUrl().then(function (url) {
-    if (!url) return; // chưa cấu hình trong /admin, bỏ qua im lặng
+    if (!url) {
+      console.warn('[Google Sheet] Chưa cấu hình "Đường dẫn Apps Script" trong /admin → Thông tin chung, nên KHÔNG gửi "' + type + '" đi đâu cả.');
+      return;
+    }
+    console.info('[Google Sheet] Đang gửi "' + type + '" tới', url);
     fetch(url, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(Object.assign({ type: type }, payload)),
-    }).catch(function (err) { console.error('Không gửi được dữ liệu về Google:', err); });
+    }).then(function () {
+      console.info('[Google Sheet] Đã gửi "' + type + '" xong (chế độ no-cors nên không đọc được kết quả trả về — vào Google Sheet kiểm tra trực tiếp để chắc chắn).');
+    }).catch(function (err) {
+      console.error('[Google Sheet] Gửi "' + type + '" THẤT BẠI:', err);
+    });
   });
 }
 
